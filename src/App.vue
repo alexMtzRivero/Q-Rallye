@@ -1,17 +1,29 @@
 <template>
   <div id="app">
+    <div class="hoizontal">
+      <div class="main"></div>
+    </div>
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+
+
+var firebaseController = require('./Js/firebaseController.js').default;
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+  
+  },
+  mounted(){
+   
+    firebaseController.pushToDatabase();
+  
+    
   }
 }
 </script>
