@@ -1,9 +1,12 @@
 <template>
   <div id="app">
     <div class="hoizontal">
-      <div class="main"></div>
+     <sideBar></sideBar>
+      <div class="main">
+
+      </div>
+    
     </div>
-    <img alt="Vue logo" src="./assets/logo.png">
   
   </div>
 </template>
@@ -11,13 +14,13 @@
 <script>
 
 
-
+import  sideBar from './components/sideBar.vue'
 var firebaseController = require('./Js/firebaseController.js').default;
 
 export default {
   name: 'app',
   components: {
-  
+  sideBar
   },
   mounted(){
    
@@ -29,12 +32,12 @@ export default {
 </script>
 
 <style>
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
