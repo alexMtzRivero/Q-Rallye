@@ -14,6 +14,7 @@
       <ul v-for="rule in rules" class="rule" :key="rule.id">
         <h3>{{rule.data().title}}</h3>
         <p>{{rule.data().rule}}</p>
+        <button type="button" @click='removeRule(rule.id)'>Supprimer</button>
       </ul>
     </li>
 
@@ -35,22 +36,28 @@ export default {
     return{
       rules: "",
       ruleTitle: "",
-      ruleText:""
+      ruleText:"",
+      db:firebase.firestore()
     }
   },
   methods:{
     addRule: function(){
-      let db = firebase.firestore();
-      db.collection('Rules').add({title: this.ruleTitle, rule: this.ruleText})
-      db.collection('Rules').get().then((querySnapshot) => {
-      this.rules = querySnapshot.docs;
-    })
+      this.db.collection('Rules').add({title: this.ruleTitle, rule: this.ruleText})
+      this.getRules();
+    },
+    removeRule: function(ref){
+      this.db.collection('Rules').doc(ref).delete();
+      this.getRules();
+    },
+    getRules: function(){
+      this.db.collection('Rules').get().then((querySnapshot) => {
+        this.rules = querySnapshot.docs;
+      })
     }
   },
   // on create
   mounted(){
-    let db = firebase.firestore();
-    db.collection('Rules').get().then((querySnapshot) => {
+    this.db.collection('Rules').get().then((querySnapshot) => {
       this.rules = querySnapshot.docs;      
     })
   }
