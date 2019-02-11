@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <div class="hoizontal">
+    <div class="horizontal">
      
      <sideBar></sideBar>
-     <CreateAccount></CreateAccount>
+     
       <div class="main">
-
+        <Login></Login>
       </div>
     
     </div>
@@ -18,12 +18,13 @@
 
 import  sideBar from './components/sideBar.vue'
 import CreateAccount from "./components/Login/CreateAccount.vue"
-
+import Login from "./components/Login/Login.vue"
 export default {
   name: 'app',
   components: {
   sideBar,
   CreateAccount,
+  Login
   },
   mounted(){
    
@@ -42,5 +43,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.horizontal{
+  display: flex;
+}
+.main{
+  width: -webkit-fill-available;
 }
 </style>

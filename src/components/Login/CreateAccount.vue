@@ -1,5 +1,6 @@
 <template>
   <div class="LoginContainer">
+    <h1>Create Account</h1>
     <div class="section">
       <input type="text" placeholder="mail" v-model="mail"><br><label >{{comentsMail}}</label>
     </div>
@@ -17,7 +18,7 @@
 </template>
 
 <script>
-import firebase,{ functions } from "firebase";
+import firebase from "firebase";
 export default {
   name: 'CreateAccount',
   components:{
@@ -58,6 +59,7 @@ export default {
     createUser: function(){
     
       
+
       if(this.validate()){
          firebase.auth().createUserWithEmailAndPassword( this.mail,this.pass1).then(
            function(){
