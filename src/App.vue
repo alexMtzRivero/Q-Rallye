@@ -1,9 +1,13 @@
 <template>
   <div id="app">
     <div class="hoizontal">
-      <div class="main"></div>
-    </div>
     <img alt="Vue logo" src="./assets/logo.png">
+      <div class="main">
+
+        <Rules></Rules>
+
+      </div>
+    </div>
   
   </div>
 </template>
@@ -12,17 +16,18 @@
 
 
 
-var firebaseController = require('./Js/firebaseController.js').default;
+//var firebaseController = require('./Js/firebaseController.js').default;
+import Rules from './components/rules.vue';
 
 export default {
   name: 'app',
   components: {
-  
+    Rules
   },
   mounted(){
    
-    firebaseController.pushToDatabase();
-  
+    //firebaseController.pushToDatabase();
+
     
   }
 }
