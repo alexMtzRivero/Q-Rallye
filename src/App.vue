@@ -1,10 +1,12 @@
 <template>
   <div id="app">
-    <div class="hoizontal">
-      <div class="main"></div>
+    <div class="horizontal">
+      <div class="main">
+        <router-view>
+          
+        </router-view>
+      </div>
     </div>
-    <img alt="Vue logo" src="./assets/logo.png">
-  
   </div>
 </template>
 
@@ -19,9 +21,12 @@ export default {
   components: {
   
   },
+  methods:{
+    
+  },
   mounted(){
    
-    firebaseController.pushToDatabase();
+    
   
     
   }
