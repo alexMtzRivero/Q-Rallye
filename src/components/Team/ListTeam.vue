@@ -1,7 +1,10 @@
 <template>
-  <div class="">
-      <h1>{{teams.name}}</h1>
-      
+  <div>
+    <div v-for="team in teams" v-bind:key="team.color">
+        <h1>{{team.id}}</h1>
+        
+    </div>
+   <input type="text" @change="print()" name="azerty" id="">
   </div>
 </template>
 
@@ -23,19 +26,21 @@ export default {
     }
   },
   methods:{
+    print(){
+      console.log(this.teams.length);
+    }
 
   },
   // onCreate
   mounted(){
-        let db = firebase.firestore();
-        let rules = db.collection("Groups");
+      var db = firebase.firestore();
+        var teams=[];
         db.collection('Groups').get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                console.log(doc.id, ' => ', doc.data().color)
-                this.teams[doc.id]=doc.data();
-                console.log(this.teams)
-            })
-        })
+            this.teams=querySnapshot.docs
+          
+        })        
+      console.log(this.teams);
+        
   },
   
  
