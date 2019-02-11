@@ -1,13 +1,18 @@
 <template>
-  <div :class="shown?'holder-show':'holder-hide'">
+  <div :class="shown?'holder-hide':'holder-show'">
         <button @mousedown="change">hide</button>
+
+      <div>
         <ul>
-          <li>Teams</li>
-          <li>Rules</li>
-          <li>Questions</li>
-          <li></li>
-          <li></li>
+          <li ><img src="https://static.thenounproject.com/png/8501-200.png" 
+          alt="" class="icon"> <label v-if="shown" >Teams</label></li>
+          <li ><img src="https://cdn4.iconfinder.com/data/icons/files-13/100/circle-things-41-512.png" 
+            alt="" class="icon"><label v-if="shown">Rules</label>
+            </li>
+          <li ><img src="https://cdn2.iconfinder.com/data/icons/basic-office-snippets/170/Basic_Office-7-512.png" alt="" class="icon"><label v-if="shown">Questions</label></li>
+          <li ><img src="" alt="" class="icon"><label v-if="shown">Teams</label></li>
         </ul>
+      </div>
         <a  v-if="fb.auth().currentUser" @click="logOut()">Logout</a>
   </div>
 </template>
@@ -26,7 +31,7 @@ export default {
   data(){
     return{
           fb : firebase,
-          shown : true
+          shown : false
     }
   },
   methods:{
@@ -55,16 +60,38 @@ export default {
 .holder-hide{
 position: absolute;
   transition: 0.5s;
-  width: 20%;
+  width: 200px;
   height: 100vh;
   background-color: #19212b;
 }
 .holder-show{
 position: absolute;
 
-  transition: 0.5s;
-  width: 5%;
+transition: 0.5s;
+  width: 60px;
   height: 100vh;
   background-color: #19212b;
 }
+li{
+  display: flex;
+    color: white;
+    margin: 16px 20%;
+    
+}
+ul{
+  width: 100%;
+  padding:0px;
+}
+.icon{
+  width: 32px;
+  height: 32px;
+}
+label{
+  text-align: center;
+  padding-left: 16px;
+display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+}
+
 </style>
