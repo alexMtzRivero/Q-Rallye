@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <div class="hoizontal">
+     
      <sideBar></sideBar>
+     <CreateAccount></CreateAccount>
       <div class="main">
 
       </div>
@@ -15,16 +17,17 @@
 
 
 import  sideBar from './components/sideBar.vue'
-var firebaseController = require('./Js/firebaseController.js').default;
+import CreateAccount from "./components/Login/CreateAccount.vue"
 
 export default {
   name: 'app',
   components: {
-  sideBar
+  sideBar,
+  CreateAccount,
   },
   mounted(){
    
-    firebaseController.pushToDatabase();
+
   
     
   }
