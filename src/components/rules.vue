@@ -1,9 +1,18 @@
 <template>
   <div class="name">
 
+    <label>categorie </label>
+    <input type="text" v-model="ruleTitle"/>
+    <br>
+    <label>règle </label>
+    <textarea v-model="ruleText"></textarea>
+    <br>
+    <button type="button" @click='addRule'>Ajouter</button>
+
+    <h1>Liste des règles</h1>
     <li>
       <ul v-for="rule in rules" class="rule" :key="rule.id">
-        <h1>{{rule.data().title}}</h1>
+        <h3>{{rule.data().title}}</h3>
         <p>{{rule.data().rule}}</p>
       </ul>
     </li>
@@ -24,19 +33,25 @@ export default {
   },
   data(){
     return{
-      rules: ""
+      rules: "",
+      ruleTitle: "",
+      ruleText:""
     }
   },
   methods:{
-    
+    addRule: function(){
+      let db = firebase.firestore();
+      db.collection('Rules').add({title: this.ruleTitle, rule: this.ruleText})
+      db.collection('Rules').get().then((querySnapshot) => {
+      this.rules = querySnapshot.docs;
+    })
+    }
   },
   // on create
   mounted(){
     let db = firebase.firestore();
     db.collection('Rules').get().then((querySnapshot) => {
-      this.rules = querySnapshot.docs;
-      console.log(this.rules);
-      
+      this.rules = querySnapshot.docs;      
     })
   }
 }
