@@ -8,10 +8,12 @@
           <li></li>
           <li></li>
         </ul>
+        <a  v-if="fb.auth().currentUser" @click="logOut()">Logout</a>
   </div>
 </template>
 
 <script>
+import firebase from "firebase";
 export default {
   name: 'sideBar',
   components:{
@@ -23,6 +25,7 @@ export default {
   },
   data(){
     return{
+          fb : firebase,
           shown : true
     }
   },
@@ -30,7 +33,15 @@ export default {
         change(){
           
           this.shown = !this.shown
+        },
+        logOut: function(){
+          firebase.auth().signOut().then(function() {
+              // Sign-out successful.
+            }).catch(function(error) {
+              // An error happened.
+            });
         }
+        
   },
   // on create
   mounted(){
