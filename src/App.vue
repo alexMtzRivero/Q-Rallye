@@ -2,24 +2,26 @@
   <div id="app">
     <div class="horizontal">
       <div class="main">
+        <RallyeManager></RallyeManager>
         <router-view>
           
         </router-view>
       </div>
     </div>
   </div>
+  
 </template>
 
 <script>
 
-
+import RallyeManager from "./components/RallyeManager.vue";
 
 var firebaseController = require('./Js/firebaseController.js').default;
 
 export default {
   name: 'app',
   components: {
-  
+   RallyeManager
   },
   methods:{
     
