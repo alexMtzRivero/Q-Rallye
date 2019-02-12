@@ -4,7 +4,7 @@
       <div class="main"></div>
     </div>
     <img alt="Vue logo" src="./assets/logo.png">
-  
+    <quizzes></quizzes>
   </div>
 </template>
 
@@ -12,16 +12,17 @@
 
 
 
-var firebaseController = require('./Js/firebaseController.js').default;
+//var firebaseController = require('./Js/firebaseController.js').default;
+import quizzes from './components/quizzes.vue';
 
 export default {
   name: 'app',
   components: {
-  
+      quizzes
   },
   mounted(){
    
-    firebaseController.pushToDatabase();
+    //firebaseController.pushToDatabase();
   
     
   }
