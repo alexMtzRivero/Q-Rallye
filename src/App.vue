@@ -5,7 +5,7 @@
     </div>
     <img alt="Vue logo" src="./assets/logo.png">
     <CreateTeam></CreateTeam>
-    <ListTeam></ListTeam>
+    <ListTeam ref="refreshList"></ListTeam>
   
   </div>
 </template>
@@ -25,8 +25,12 @@ export default {
     ListTeam
   
   },
+  methods: {
+    
+  },
   mounted(){
-   
+    console.log(this.$refs.refreshList);
+    
     //firebaseController.pushToDatabase();
   
     

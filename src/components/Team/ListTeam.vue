@@ -1,10 +1,26 @@
 <template>
   <div>
-    <div v-for="team in teams" v-bind:key="team.color">
+    <div v-for="(team,index) in teams" v-bind:key="team.id">
         <h1>{{team.id}}</h1>
+        <p>Couleur : {{team.data().color}} <br>
+        Mot de passe : {{team.data().password}}</p>
+        <button type="button" v-if="index != idDivEdited" @click="showRunner(index)" >Ajouter un membre</button>
         
+
+        <div v-if="index == idDivEdited" >
+          <input type="checkbox" id="multi" checked v-model="tempCb">Ajout multiple<br>
+          <label for="name">Nom :</label>
+          <input id="name" type="text" v-model="tempFirstName" />
+          <br>
+          <label for="color">Prénom :</label>
+          <input id="URL" type="text" v-model="tempLastName" />
+          <br>
+          <button type="button" @click="addRunner(team)">Ajouter</button>
+          <button type="button" v-if="tempCb" @click="showRunner(-1)">Terminer</button>
+        </div>
+
     </div>
-   <input type="text" @change="print()" name="azerty" id="">
+   
   </div>
 </template>
 
@@ -13,34 +29,83 @@
 import firebase from "firebase";
 export default {
   name: 'ListTeam',
-  components:{
-
-  },
-  props: {
-      
-
-  },
+ 
   data(){
     return{
         teams:[],
+        runners:[],
+        idRunner:"",
+        idDivEdited:-1,
+        runner: {
+            firstName:"",
+            lastName:""
+        },
+        tempFirstName:"",
+        tempLastName:"",
+        tempCb:true,
+        show:false
     }
   },
   methods:{
-    print(){
-      console.log(this.teams.length);
-    }
+    refreshList: function(){
+      var db = firebase.firestore();
+      db.collection('Groups').get().then((querySnapshot) => {
+          this.teams=querySnapshot.docs
+          
+      })
+    },
+    showRunner: function(id){
+      this.show = !this.show;
+      this.idDivEdited = id;
+    },
+    
+    addRunner: function(team){
+      var cb = document.getElementById('multi');
+      if(!cb.checked){
+        this.idDivEdited = -1;
+         this.show = !this.show;
+      }
+      this.runner.firstName = this.tempFirstName;
+      this.runner.lastName = this.tempLastName;
+      this.getRunnerFromTeam(team);
+      this.resetField;
+    },
+    resetField: function(){
+        this.tempFirstName = "";
+        this.tempLastName = "";
+        this.runner = {
+            "firstName":"",
+            "lastName":""
+        }
+    },
+    getRunnerFromTeam(team){
+      var db = firebase.firestore();
+      db.collection('Groups/'+team.id+'/Runners').get().then((querySnapshot) => {
+          //this.teams=querySnapshot.docs
+          this.runners = querySnapshot.docs;
+          this.idRunner = this.runners.length + 1;
+          console.log(this.idRunner);
+          this.pushRunner(team);
+      })
+    },
+   
+    // Ajout d'un runner
+    pushRunner(team) {
+        var db = firebase.firestore();        
+        db.collection("Groups/"+team.id+"/Runners").doc("runner_"+this.idRunner).set(this.runner)
+        .then(function(docRef) {
+            console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+            console.error("Error adding document: ", error);
+        });
+    },
+
 
   },
   // onCreate
   mounted(){
-      var db = firebase.firestore();
-        var teams=[];
-        db.collection('Groups').get().then((querySnapshot) => {
-            this.teams=querySnapshot.docs
-          
-        })        
-      console.log(this.teams);
-        
+      this.refreshList();        
   },
   
  
@@ -50,5 +115,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+
 
 </style>

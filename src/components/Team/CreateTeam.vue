@@ -1,10 +1,10 @@
 <template>
   <div >
-    <label for="name">Nom d'équipe :</label>
-    <input id="name" type="text" v-model="tempName" />
+    <label for="teamName">Nom d'équipe :</label>
+    <input id="teamName" type="text" v-model="tempName" />
     <br>
     <label for="color">Couleur :</label>
-    <input id="URL" type="text" v-model="tempColor" />
+    <input id="color" type="text" v-model="tempColor" />
     <br>
     <button type="button" @click="addTeam()">Ajouter l'équipe</button>
   </div>
@@ -20,12 +20,15 @@ export default {
     return{
         team:{ 
             color:"",
-            password:"",   
+            password:"",  
+            position:{
+                lat:"0",
+                lon:"0"
+            } 
         },
         name:"",
         tempName:"",
         tempColor:"",
-
     }
   },
   methods:{
@@ -34,6 +37,7 @@ export default {
             this.team.color = this.tempColor;
             this.generatePassword();
             this.pushToDatabase();
+            this.$parent.$refs.refreshList.refreshList();
             this.resetField();
             this.resetTeam();
         },
@@ -47,7 +51,6 @@ export default {
         resetField: function(){
             this.tempName = "";
             this.tempColor = "";
-            
         },
 
         // Ajout d'une équipe (sans les collections)
