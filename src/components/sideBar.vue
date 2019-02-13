@@ -4,8 +4,13 @@
 
       <div>
         <ul>
-          <li ><img src="https://static.thenounproject.com/png/8501-200.png" 
-          alt="" class="icon"> <label v-if="shown" >Teams</label></li>
+          <router-link to ="/teams">
+            <li>
+              <img src="https://static.thenounproject.com/png/8501-200.png" 
+              alt="" class="icon"> 
+              <label v-if="shown" >Teams</label>
+            </li>
+          </router-link>
           <router-link to ="/rules">
             <li >
               <img src="https://cdn4.iconfinder.com/data/icons/files-13/100/circle-things-41-512.png" alt="" class="icon">
