@@ -5,6 +5,7 @@
     </div>
     <img alt="Vue logo" src="./assets/logo.png">
     <quizzes></quizzes>
+    <questions ref="refreshList"></questions>
   </div>
 </template>
 
@@ -14,11 +15,13 @@
 
 //var firebaseController = require('./Js/firebaseController.js').default;
 import quizzes from './components/quizzes.vue';
+import questions from './components/questions.vue';
 
 export default {
   name: 'app',
   components: {
-      quizzes
+      quizzes,
+      questions
   },
   mounted(){
    

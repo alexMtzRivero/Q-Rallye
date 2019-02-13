@@ -5,10 +5,10 @@
         <br/><br/>
         <button v-on:click="addQuiz">Ajouter</button>
 
-        <h2>Liste des quiz :</h2>
+        <!--<h2>Liste des quiz :</h2>
         <ul>
             <li v-for="quiz in quizzes" v-bind:key="quiz.id">{{quiz.data().nomQuiz}}</li>
-        </ul>
+        </ul>-->
             
 
     </div>
