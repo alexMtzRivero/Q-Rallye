@@ -67,6 +67,8 @@ export default {
             //good
             refreshList: function(){
                 var db = firebase.firestore();
+                this.quizzes = [];
+                this.$forceUpdate();
                 db.collection('Quizzes').get().then((querySnapshot) => {
                     querySnapshot.docs.forEach(element => {
                         var toPush = element.data();
