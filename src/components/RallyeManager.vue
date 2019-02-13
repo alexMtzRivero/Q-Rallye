@@ -1,11 +1,24 @@
 <template>
   <div class="">
     <h1>{{teams.length}} palyers</h1>
-    <div v-for="team in teams" v-bind:key="team.name">
-      <h1>{{team.name}}</h1>
-      <div v-for="(answer,index) in team.answers" v-bind:key="team.name+index">
-        <h2>{{answer.choices}}</h2>
-        <div></div>
+    <div v-for="(team,indexT) in teams" v-bind:key="team.name">
+      <div>
+           <h1 @click="changeDisplay(indexT)">{{team.name}}</h1>
+      </div>
+     
+      <div v-if="team.displayed" >
+        <div v-for="(answer,index) in team.answers" v-bind:key="team.name+index" class="horizontal">
+           <h2 class = "listSection">{{answer.id}}</h2>
+           <h2 class = "listSection">time</h2>
+           <table>
+             <tr>
+                <th v-for="n in answer.choices" :key ="n"> response id </th>
+             </tr>
+             <tr>
+                <th v-for="n in answer.choices" :key ="n"> team answer </th>
+             </tr>
+           </table>
+        </div>
       </div>
     </div>
     <button @click="logPlayers()"> refresh</button>
@@ -32,6 +45,9 @@ export default {
     }
   },
   methods: {
+    changeDisplay:function (index) {
+      this.teams[index].displayed = !this.teams[index].displayed;
+    },
     logPlayers: function () {
       console.log(this.teams);
       this.$forceUpdate();
@@ -84,6 +100,7 @@ export default {
           // the same but reactive this.teams[element.id] = element.data();
           var toPush = element.data();
           toPush.name = element.id;
+          toPush.displayed = false;
           this.teams.push(toPush);
         });
 
@@ -147,8 +164,20 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #mapid { 
+  display: -webkit-inline-box;
   height: 70vw;
   width: 70vw;
 
 }
+.horizontal{
+  display: -webkit-inline-box;
+      width: -webkit-fill-available;
+}
+.listSection{
+  width: 15%;
+}
+table{
+      width: 70%;
+}
+
 </style>
