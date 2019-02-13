@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import quizzes from './components/quizzes.vue';
-import questions from './components/questions.vue';
+import quizzes from './components/quizzes.vue'
+import questions from './components/questions.vue'
 import Team from'./components/Team/Team.vue'
 import RallyeManager from "./components/RallyeManager.vue"
 import  sideBar from './components/sideBar.vue'
@@ -28,8 +28,8 @@ import Rules from "./components/rules.vue"
 export default {
   name: 'app',
   components: {
-      quizzes,
-      questions
+  quizzes,
+  questions,
   RallyeManager,
   sideBar,
   CreateAccount,

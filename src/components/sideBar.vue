@@ -17,7 +17,9 @@
               <label v-if="shown">Rules</label>
             </li>
           </router-link>
-          <li ><img src="https://cdn2.iconfinder.com/data/icons/basic-office-snippets/170/Basic_Office-7-512.png" alt="" class="icon"><label v-if="shown">Questions</label></li>
+          <router-link to ="/quizz">
+            <li ><img src="https://cdn2.iconfinder.com/data/icons/basic-office-snippets/170/Basic_Office-7-512.png" alt="" class="icon"><label v-if="shown">Questions</label></li>
+          </router-link>
           <li ><img src="" alt="" class="icon"><label v-if="shown">Teams</label></li>
           <router-link to ="/rallyeManager">
             <li >
