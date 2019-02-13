@@ -2,9 +2,9 @@
   <div id="app">
     <div class="horizontal">
       <div class="main">
-        <router-view>
+        <Rules>
           
-        </router-view>
+        </Rules>
       </div>
     </div>
   </div>
@@ -27,8 +27,6 @@ export default {
   },
   mounted(){
    
-    
-  
     
   }
 }
