@@ -2,12 +2,12 @@
   <div id="app">
     <div class="horizontal">
      
-     <sideBar></sideBar>
+     <sideBar>
+       
+     </sideBar>
      
+    
       <div class="main">
-        <router-view>
-          
-        </router-view>
       </div>
     
     </div>
@@ -27,7 +27,7 @@ export default {
   components: {
   sideBar,
   CreateAccount,
-  Login
+  Login,
     Rules
   },
   methods:{
