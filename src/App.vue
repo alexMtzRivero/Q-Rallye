@@ -12,13 +12,12 @@
       </div>
     
     </div>
-  
   </div>
   
 </template>
 
 <script>
-
+import Team from'./components/Team/Team.vue'
 import RallyeManager from "./components/RallyeManager.vue"
 import  sideBar from './components/sideBar.vue'
 import CreateAccount from "./components/Login/CreateAccount.vue"
@@ -32,15 +31,14 @@ export default {
   CreateAccount,
   Login,
   Rules,
-  RallyeManager
+  RallyeManager,
+  Team
   },
-  methods:{
+
+  methods: {
     
   },
   mounted(){
-   
-    
-  
     
   }
 }
@@ -59,6 +57,6 @@ export default {
   display: flex;
 }
 .main{
-  width: -webkit-fill-available;
+  width: 100%;
 }
 </style>
