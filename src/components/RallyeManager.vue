@@ -1,5 +1,6 @@
 <template>
   <div class="">
+    <button @click="logPlayers()"> refresh</button>
     <h1>{{teams.length}} palyers</h1>
     <div v-for="(team,indexT) in teams" v-bind:key="team.name">
       <div>
@@ -21,7 +22,7 @@
         </div>
       </div>
     </div>
-    <button @click="logPlayers()"> refresh</button>
+    
     <div id="mapid" class="mapid"> </div>
   </div>
 </template>
@@ -49,7 +50,6 @@ export default {
       this.teams[index].displayed = !this.teams[index].displayed;
     },
     logPlayers: function () {
-      console.log(this.teams);
       this.$forceUpdate();
 
     },
@@ -75,7 +75,6 @@ export default {
 
       for (let i = 0; i < teamList.length; i++) {
         const team = teamList[i];
-        console.log(team.name);
 
         db.collection(`Groups/${team.name}/Answers`).orderBy("startQuiz").get().then((querySnapshot) => {
 
