@@ -94,9 +94,7 @@ export default {
       console.log(runner);
       console.log(this.runners);
       console.log(this.teams);
-
-      
-       //db.collection('Groups/'+team+'/Runners').doc(runner).delete();
+      db.collection('Groups/'+team+'/Runners').doc(runner.id).delete();
       // this.refreshList();
     },
     resetField: function(){
@@ -113,7 +111,9 @@ export default {
           var index = this.runners.push([])-1
           var i = 0;
           querySnapshot.forEach(snapshot => {
-            this.runners[index].push(snapshot.data())
+            var toPush = snapshot.data()
+            toPush.id=snapshot.id
+            this.runners[index].push(toPush)
             i++;
             console.log(team.id +":"+ index);
             
