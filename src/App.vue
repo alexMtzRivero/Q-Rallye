@@ -14,11 +14,12 @@
     </div>
   
   </div>
+  
 </template>
 
 <script>
 
-
+import RallyeManager from "./components/RallyeManager.vue"
 import  sideBar from './components/sideBar.vue'
 import CreateAccount from "./components/Login/CreateAccount.vue"
 import Login from "./components/Login/Login.vue"
@@ -26,10 +27,12 @@ import Rules from "./components/rules.vue"
 export default {
   name: 'app',
   components: {
+  RallyeManager,
   sideBar,
   CreateAccount,
   Login,
-  Rules
+  Rules,
+  RallyeManager
   },
   methods:{
     
