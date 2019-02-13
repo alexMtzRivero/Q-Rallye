@@ -28,9 +28,7 @@ export default {
   methods: {
     
   },
-  mounted(){
-    console.log(this.$refs.refreshList);
-    
+  mounted(){    
     //firebaseController.pushToDatabase();
   
     
