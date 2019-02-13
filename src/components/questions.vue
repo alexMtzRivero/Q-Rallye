@@ -96,7 +96,6 @@ export default {
                     querySnapshot.docs.forEach(element => {
                         var toPush = element.data();
                         toPush.id = element.id;
-                        console.log(toPush);
                         quiz.questions.push(toPush);
                         
                     });
