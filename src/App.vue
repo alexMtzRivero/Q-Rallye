@@ -5,7 +5,9 @@
      <sideBar></sideBar>
      
       <div class="main">
-        <Login></Login>
+        <router-view>
+          
+        </router-view>
       </div>
     
     </div>
@@ -19,19 +21,21 @@
 import  sideBar from './components/sideBar.vue'
 import CreateAccount from "./components/Login/CreateAccount.vue"
 import Login from "./components/Login/Login.vue"
+import Rules from './components/rules.vue';
 export default {
   name: 'app',
   components: {
   sideBar,
   CreateAccount,
   Login
+    Rules
   },
   methods:{
     
   },
   mounted(){
    
-
+    
   
     
   }
