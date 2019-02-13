@@ -1,12 +1,19 @@
 <template>
   <div id="app">
-    <div class="hoizontal">
-      <div class="main"></div>
+    <div class="horizontal">
+      <div class="main">
+        <router-view>
+          
+        </router-view>
+      </div>
     </div>
+<<<<<<< HEAD
     <img alt="Vue logo" src="./assets/logo.png">
     <CreateTeam></CreateTeam>
     <ListTeam ref="refreshList"></ListTeam>
   
+=======
+>>>>>>> 404daf3a06623e92b1c51a03ab250ffd862b6e7f
   </div>
 </template>
 
@@ -25,11 +32,20 @@ export default {
     ListTeam
   
   },
+<<<<<<< HEAD
   methods: {
     
   },
   mounted(){    
     //firebaseController.pushToDatabase();
+=======
+  methods:{
+    
+  },
+  mounted(){
+   
+    
+>>>>>>> 404daf3a06623e92b1c51a03ab250ffd862b6e7f
   
     
   }

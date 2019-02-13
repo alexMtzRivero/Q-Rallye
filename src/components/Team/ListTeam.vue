@@ -1,12 +1,12 @@
 <template>
   <div>
-    <button @click ="test()">test</button>
     <div v-for="(team,index) in teams" v-bind:key="team.id">
         <h1>{{team.id}}</h1>
         <p>Couleur : {{team.data().color}} <br>
         Mot de passe : {{team.data().password}}</p>
         <div v-for="runner in runners[index]" v-bind:key="runner.id">
-          <!-- Vérifié affich ge -->
+          <button type="button" >Modifier</button>
+          <button type="button" @click="delRunner(runner,team.id)">Supprimer</button>
           <p>Nom : {{runner.lastName}} <br>
           Prénom : {{runner.firstName}}</p>
         </div>
@@ -16,7 +16,7 @@
         <div v-if="index == idDivEdited" >
           <input type="checkbox" id="multi" checked v-model="tempCb">Ajout multiple<br>
           <label for="lastName">Nom :</label>
-          <input id="name" type="text" v-model="tempLastName" />
+          <input id="lastName" type="text" v-model="tempLastName" />
           <br>
           <label for="firstName">Prénom :</label>
           <input id="firstName" type="text" v-model="tempFirstName" />
@@ -66,7 +66,7 @@ export default {
           });
           
       })      
-      this.test();
+      
     },
     showRunner: function(id){
       this.show = !this.show;
@@ -85,6 +85,16 @@ export default {
       this.resetField();
       this.refreshList();
     },
+    delRunner: function (runner,team){
+      var db = firebase.firestore();
+      console.log(runner);
+      console.log(this.runners);
+      console.log(this.teams);
+
+      
+       //db.collection('Groups/'+team+'/Runners').doc(runner).delete();
+      // this.refreshList();
+    },
     resetField: function(){
         this.tempFirstName = "";
         this.tempLastName = "";
@@ -96,11 +106,16 @@ export default {
     getRunnerFromTeam(team){
       var db = firebase.firestore();
       db.collection('Groups/'+team.id+'/Runners').get().then((querySnapshot) => {
-           var index = this.runners.push([])-1
+          var index = this.runners.push([])-1
+          var i = 0;
           querySnapshot.forEach(snapshot => {
             this.runners[index].push(snapshot.data())
+            i++;
+            console.log(team.id +":"+ index);
+            
           });
-         
+               console.log(this.runners);
+
       })
     },
    
