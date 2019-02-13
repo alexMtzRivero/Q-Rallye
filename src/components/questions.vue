@@ -1,51 +1,31 @@
 <template>
     <div>
-        <div v-for="(quiz,index) in quizzes" v-bind:key="quiz.id" >
-        <h1>{{quiz.id}}</h1>
-        <button type="button" v-if="index != idDivEdited" @click="showQuestions(index)" >Ajouter une question</button>
-        
-        <div v-if="index == idDivEdited" >
-          <!--tempCB--><input type="checkbox" id="multi" checked v-model="tempCb"/>Ajout multiple<br>
-          <label for="question">Question :</label>
-          <input id="question" type="text" v-model="tempQuestion" />
-          <br>
-          <label for="goodAnswer">Bonne réponse :</label>
-          <input id="goodAnswer" type="text" v-model="tempGoodAnswer" />
-          <br>
-          <label for="badAnswer1">Mauvaise réponse 1 :</label>
-          <input id="badAnswer1" type="text" v-model="tempBadAnswer1" />
-          <br>
-          <label for="badAnswer2">Mauvaise réponse 2 :</label>
-          <input id="badAnswer2" type="text" v-model="tempBadAnswer2" />
-          <br>
-          <label for="badAnswer3">Mauvaise réponse 3 :</label>
-          <input id="badAnswer3" type="text" v-model="tempBadAnswer3" />
-          <br>
-          <button type="button" @click="addQuestion(quiz)">Ajouter</button>
-          <!--tempCB--><button type="button" v-if="tempCb" @click="showQuestions(-1)">Terminer</button>
-        </div>
-        </div>
+        <button @click="log()">show array</button>
+        <div v-for="(quiz,index) in quizzes" v-bind:key="quiz.id">
+            <h1>{{quiz.id}}</h1>
+            <div v-for="question in quiz.questions" :key ="question.question+quiz.id">
+                <h3>{{question.question}}</h3>
+                <ol >
+                    <li v-for="pAnswer in question.choices" :key ="pAnswer">{{pAnswer}} </li>
+                </ol>
+            </div>
+            <button type="button" v-if="index != idDivEdited" @click="selectToAddQuestion(index)">Ajouter une question</button>
 
-        <!--Ancienne version
-        <p>Question :</p><input v-model="tempQuestions" type="text" id="question"/>
-        <p>Bonne réponse :</p><input v-model="tempGoodAnswer" type="text" id="goodAnswer"/>
-        <p>Mauvaise réponse 1 :</p><input v-model="tempBadAnswer1" type="text" id="badAnswer1"/>
-        <p>Mauvaise réponse 2 :</p><input v-model="tempBadAnswer1" type="text" id="badAnswer2"/>
-        <p>Mauvaise réponse 3 :</p><input v-model="tempBadAnswer1" type="text" id="badAnswer3"/>
-        <br/><br/>
-        <button v-on:click="addQuestion">Ajouter</button>
-
-        <h2>Liste des questions :</h2>
-        <ul>
-            <li v-for="question in questions" v-bind:key="question.id">
-                <p><b {{question.data().question}}></b></p><br/>
-                <p>Bonne réponse : <b {{question.data().goodAnswer}}></b> </p><br/>-->
-                <!-- A changer
-                <p>Mauvaise réponse 1 : <b {{question.data().badAnswer1}}></b> </p><br/>
-                <p>Mauvaise réponse 2 : <b {{question.data().badAnswer2}}></b> </p><br/>
-                <p>Mauvaise réponse 3 : <b {{question.data().badAnswer3}}></b> </p><br/>
-            </li>
-        </ul>-->
+            <div v-if="index == selectedQuiz">
+                
+                <input type="text" placeholder="question" v-model="tempQuestion.question">
+                <form action="" >
+                    <div v-for="(answer,indexT) in tempQuestion.choices" :key="`${indexT}+${answer}`">
+                        <input  type="radio" name="answer" :value="indexT" v-model="tempQuestion.goodAnswer" >{{answer}} <br>
+                    </div>
+                    
+                </form>
+                <input type="text" v-model="tempOption">
+                <button @click="addOptionToTemp(tempOption)">add Option</button>
+                <br>
+                <button type="button" @click="pushTempTo(index)">Ajouter</button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -57,82 +37,87 @@ export default {
         data () {
             return {
                 quizzes:[],
-                questions:[],
                 idQuestion:"",
                 idDivEdited:-1,//?????
-                question: {
-                    question: '',
-                    goodAnswer: '',
-                    badAnswer1: '',
-                    badAnswer2: '',
-                    badAnswer3: '',
-                },
-                tempQuestion:'',
-                tempGoodAnswer:'',
-                tempBadAnswer1:'',
-                tempBadAnswer2:'',
-                tempBadAnswer3:'',
                 tempCb:true,
+                tempOption : "",
+                tempQuestion:[],
+                selectedQuiz:-1,
                 show:false
             }
         },
         methods: {
+            log:function(){
+                console.log(this.quizzes);
+                
+            },
+            selectToAddQuestion(quizzIndex){
+                this.tempQuestion = {}
+                this.selectedQuiz =  (quizzIndex == this.selectedQuiz)? -1: quizzIndex;
+                
+            },
+            addOptionToTemp(option){
+                this.tempOption ="";
+                
+               if( !this.tempQuestion.choices)this.tempQuestion.choices = []
+               this.tempQuestion.choices.push(option); 
+               this.$forceUpdate();
+            },
+          
+            //good
             refreshList: function(){
                 var db = firebase.firestore();
                 db.collection('Quizzes').get().then((querySnapshot) => {
-                    this.quizzes=querySnapshot.docs
+                    querySnapshot.docs.forEach(element => {
+                        var toPush = element.data();
+                        toPush.id = element.id;
+                        const ind = this.quizzes.push(toPush)-1
+                        this.getQuestionFromQuiz(this.quizzes[ind])
+                    });
+                    
                 })
             },
-            showQuestions: function(id){
-                this.show = !this.show;
-                this.idDivEdited = id;
-            },
+            
             addQuestion: function(quiz){
                 var cb = document.getElementById('multi');
                 this.idDivEdited = quiz;
                 if(!cb.checked){
                     this.show = !this.show;
                 }
-                this.question.question = this.tempQuestion
-                this.question.goodAnswer = this.tempGoodAnswer
-                this.question.badAnswer1 = this.tempBadAnswer1
-                this.question.badAnswer2 = this.tempBadAnswer2
-                this.question.badAnswer3 = this.tempBadAnswer3
+               
                 this.getQuestionFromQuiz(quiz);
                 this.resetField;
             },
-            resetField: function()  {
-                this.tempQuestion = "";
-                this.tempGoodAnswer = "";
-                this.tempBadAnswer1 = "";
-                this.tempBadAnswer2 = "";
-                this.tempBadAnswer3 = "";
-                this.question = {
-                    "question":"",
-                    "goodAnswer":"",
-                    "badAnswer1":"",
-                    "badAnswer2":"",
-                    "badAnswer3":"",
-                }
-            },
+            //good
             getQuestionFromQuiz(quiz){
                 var db = firebase.firestore();
                 db.collection('Quizzes/'+quiz.id+'/Questions').get().then((querySnapshot) => {
-                    this.questions = querySnapshot.docs;
-                    this.idQuestion = this.questions.length + 1;
-                    console.log(this.idQuestion);
-                    this.pushQuestion(quiz);
+                    quiz.questions = []
+                    querySnapshot.docs.forEach(element => {
+                        var toPush = element.data();
+                        toPush.id = element.id;
+                        console.log(toPush);
+                        quiz.questions.push(toPush);
+                        
+                    });
+                    this.$forceUpdate();
                 })
             },
-            pushQuestion(quiz) {
+            //good
+            pushTempTo(quizzIndex) {
                 var db = firebase.firestore();        
-                db.collection("Quizzes/"+quiz.id+"/Questions").doc("question"+this.idQuestion).set(this.question)
-                .then(function(docRef) {
+                var ind = (this.quizzes[quizzIndex].questions.length)?  this.quizzes[quizzIndex].questions.length:0;
+                var id = this.quizzes[quizzIndex].id
+                db.collection("Quizzes/"+id+"/Questions").doc("question"+ind).set(this.tempQuestion)
+                .then((docRef) => {
+                    this.refreshList();
                     console.log("Document written with ID: ", docRef.id);
                 })
                 .catch(function(error) {
                     console.error("Error adding document: ", error);
                 });
+                this.tempQuestion = {}
+                this.$forceUpdate();
             },
         },
         mounted(){
