@@ -66,7 +66,7 @@ export default {
 
         if (user) {
           // User is signed in.
-            this.$router.push('/rallyeManager');
+           //nothing
         } else {
           // No user is signed in.
           this.$router.push('/login');
