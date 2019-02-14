@@ -3,9 +3,9 @@
         <button @click="log()">show array</button>
         <div v-for="(quiz,index) in quizzes"  v-bind:key="quiz.id">
             <h1>{{quiz.id}}</h1>
-            <div class="canvas">
-                <div id="qrholder" ref ="quizhoder"></div>
-                </div>
+            <div :class="(showedQR == index)?'shown':'hidden'">
+                <div  id="qrholder" ref ="quizhoder"></div>
+            </div>
             
             <button @click="makeCode(index,quiz.id)"> show QR</button>
             <div v-for="question in quiz.questions" :key ="question.question+quiz.id">
@@ -36,13 +36,15 @@
 <script>
 const QRCode = require('../Js/qrcode.js').default
 console.log(QRCode);
-import firebase from "firebase";
+import firebase,{ functions } from "firebase";
 
 export default {
         name: 'ListQuestion',
         data () {
             return {
                 quizzes:[],
+                qrCodes:[],
+                showedQR:-1,
                 idQuestion:"",
                 idDivEdited:-1,//?????
                 tempCb:true,
@@ -87,7 +89,7 @@ export default {
             },
             
             addQuestion: function(quiz){
-                var cb = document.getElementById('multi');
+                var cb =('multi');
                 this.idDivEdited = quiz;
                 if(!cb.checked){
                     this.show = !this.show;
@@ -127,14 +129,24 @@ export default {
                 this.$forceUpdate();
             },
             makeCode(ref,text){
-                console.log(this.$refs.quizhoder[ref]);
-                
+               
+              
+                console.log(this.qrCodes[ref]);
+                if(this.qrCodes[ref]== null){
                     var qrcode = new QRCode(this.$refs.quizhoder[ref], {
-                            width : 100,
-                            height : 100,
-                            margin : '100px'
+                            width : 150,
+                            height : 150 
                         });
-                    qrcode.makeCode(text);     
+                    qrcode.makeCode(text); 
+                    this.qrCodes[ref] = true; 
+                     
+                } 
+                 this.setSelectedCode(ref); 
+                
+            },
+            setSelectedCode:function( ind){
+                this.showedQR = (ind == this.showedQR)?(-1):(ind);  
+                this.$forceUpdate();
             }
         },
         mounted(){
@@ -152,7 +164,13 @@ export default {
     padding: 0px 50%;
     /* transform: translateX(-10vh); */
 }   
+.shown{
 
+}
+.hidden{
+visibility: hidden;
+height: 0px;
+}
 
 
 </style>
