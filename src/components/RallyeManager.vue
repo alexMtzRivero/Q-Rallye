@@ -149,7 +149,7 @@ export default {
   },
   // on create
   mounted() {
-
+    this.$parent.testLogin();
     this.mapInit()
 
     // gets the data of the teams

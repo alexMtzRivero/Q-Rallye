@@ -28,7 +28,7 @@ export default {
   },
   // on create
   mounted(){
-
+    this.$parent.testLogin();
   }
 }
 </script>

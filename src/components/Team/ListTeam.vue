@@ -84,7 +84,6 @@ export default {
             var toPush = snapshot.data()
             toPush.id=snapshot.id
             this.runners[index].push(toPush)
-            console.log(this.runners);
           });
           this.$forceUpdate();   
 

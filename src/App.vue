@@ -45,7 +45,7 @@ export default {
   },
 
   methods: {
-    testLogin:function () {
+    addLoginListner:function () {
 
 
     firebase.auth().onAuthStateChanged((user)=> {
@@ -60,11 +60,22 @@ export default {
 
  
      
-    }
+    },
+     testLogin:function () {
+     var user = firebase.auth().currentUser;
+
+        if (user) {
+          // User is signed in.
+            this.$router.push('/rallyeManager');
+        } else {
+          // No user is signed in.
+          this.$router.push('/login');
+        }
+     }
     
   },
   mounted(){
-    this.testLogin();
+    this.addLoginListner();
     
   }
 }
