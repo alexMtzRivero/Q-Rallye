@@ -9,9 +9,9 @@
     </div>
     <button @click="login()"> Login </button>
     <br>
-    <button> Create </button>
+    <button @click="goToCreate();"> Create </button>
     <br>
-    <a href="/forgot"> forgot pasword</a>
+    
 
   </div>
 </template>
@@ -35,14 +35,17 @@ export default {
     }
   },
   methods:{
+    goToCreate: function () {
+      this.$router.push('/createAccount');
+    },
     login:function(){
       firebase.auth().signInWithEmailAndPassword(this.mail, this.pass).then(
-        function(){
+        ()=>{
           //go to main 
           console.log("loged");
-          
+           this.$router.push('/rallyeManager');
         }
-      ).catch(function(error) {
+      ).catch((error) =>{
         // Handle Errors here.
         var errorCode = error.code;
         this.generalComents = error.message;

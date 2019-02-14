@@ -10,7 +10,6 @@
     <div class="section">
       <input type="text" placeholder="repeat password" v-model="pass2"><br><label >{{comentsPass2}}</label>
     </div>
-     
     
      <button @click="createUser()"> Create </button>
      
@@ -58,8 +57,6 @@ export default {
     },
     createUser: function(){
     
-      
-
       if(this.validate()){
          firebase.auth().createUserWithEmailAndPassword( this.mail,this.pass1).then(
            function(){
@@ -70,7 +67,7 @@ export default {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
-            console.log(error.message);
+           this.comentsPass2 = (error.message);
             
             // ...
           });

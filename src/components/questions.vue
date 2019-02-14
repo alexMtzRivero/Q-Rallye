@@ -35,7 +35,6 @@
 </template>
 <script>
 const QRCode = require('../Js/qrcode.js').default
-console.log(QRCode);
 import firebase,{ functions } from "firebase";
 
 export default {
