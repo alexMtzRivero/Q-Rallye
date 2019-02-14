@@ -4,14 +4,13 @@
     <h1>Liste des équipes :</h1>
     <div v-for="(team,index) in teams" v-bind:key="team.id" class="form-style-6">
         <h2>{{team.id}}</h2>
-        <p><b class="champ">Couleur : </b>{{team.data().color}} <br>
-        <b class="champ">Mot de passe : </b>{{team.data().password}}</p>
-        <div v-for="runner in runners[index]" v-bind:key="runner.id">
-          <!-- Vérifié affich ge -->
+        <p><b class="champ">Couleur : </b>{{team.color}} <br>
+        <b class="champ">Mot de passe : </b>{{team.password}}</p>
+       
+        <div v-for="runner in runners[index]" v-bind:key="runner.id" class="Runner">
           <p><b class="champ">Nom : </b>{{runner.lastName}} <br>
           <b class="champ">Prénom : </b>{{runner.firstName}}</p>
           <button type="button" @click="delRunner(runner,team.id)">Supprimer</button>
-
         </div>
         <button type="button" v-if="index != idDivEdited" @click="showRunner(index)" >Ajouter un membre</button>
 
@@ -43,6 +42,7 @@ export default {
   data(){
     return{
         teams:[],
+        tests:"",
         runners:[],
         idRunner:"",
         idDivEdited:-1,
@@ -58,19 +58,37 @@ export default {
   },
   methods:{
     test(){
-      console.log(this.runners);
+      console.log(this.teams);
       
     },
     refreshList: function(){
       var db = firebase.firestore();
       db.collection('Groups').get().then((querySnapshot) => {
-          this.teams=querySnapshot.docs
-          this.teams.forEach(team => {            
-            this.getRunnerFromTeam(team);
-          });
-          
+         this.teams =[];
+         this.runners = [];
+         querySnapshot.docs.forEach(element => {
+           var toPush = element.data();
+           toPush.id = element.id;
+           const idx = this.teams.push(toPush)-1;
+           this.getRunnerFromTeam(this.teams[idx]);
+          });          
       })      
       
+    },
+    getRunnerFromTeam(team){
+      var db = firebase.firestore();
+      db.collection('Groups/'+team.id+'/Runners').get().then((querySnapshot) => {
+        this.runners[team] = [];
+          var index = this.runners.push([])-1
+          querySnapshot.docs.forEach(snapshot => {
+            var toPush = snapshot.data()
+            toPush.id=snapshot.id
+            this.runners[index].push(toPush)
+            console.log(this.runners);
+          });
+          this.$forceUpdate();   
+
+      })
     },
     showRunner: function(id){
       this.show = !this.show;
@@ -87,15 +105,15 @@ export default {
       this.runner.lastName = this.tempLastName;
       this.pushRunner(team);
       this.resetField();
-      this.refreshList();
     },
     delRunner: function (runner,team){
       var db = firebase.firestore();
-      console.log(runner);
-      console.log(this.runners);
-      console.log(this.teams);
-      db.collection('Groups/'+team+'/Runners').doc(runner.id).delete();
-      // this.refreshList();
+      db.collection('Groups/'+team+'/Runners').doc(runner.id).delete().then(refresh =>{
+        console.log("deleted");
+        
+        this.refreshList();
+      });
+      
     },
     resetField: function(){
         this.tempFirstName = "";
@@ -105,29 +123,14 @@ export default {
             "lastName":""
         }
     },
-    getRunnerFromTeam(team){
-      var db = firebase.firestore();
-      db.collection('Groups/'+team.id+'/Runners').get().then((querySnapshot) => {
-          var index = this.runners.push([])-1
-          var i = 0;
-          querySnapshot.forEach(snapshot => {
-            var toPush = snapshot.data()
-            toPush.id=snapshot.id
-            this.runners[index].push(toPush)
-            i++;
-            console.log(team.id +":"+ index);
-            
-          });
-               console.log(this.runners);
-
-      })
-    },
+    
    
     // Ajout d'un runner
     pushRunner(team) {
         var db = firebase.firestore();        
         db.collection("Groups/"+team.id+"/Runners").add(this.runner)
-        .then(function(docRef) {
+        .then(docRef => {
+          this.refreshList();
             console.log("Document written with ID: ", docRef.id);
         })
         .catch(function(error) {
@@ -151,6 +154,11 @@ export default {
 <style scoped>
 .champ{
   color: #28a487;
+}
+
+.Runner{
+  background: #ceeee6;
+  margin-bottom: 10px;
 }
 
 h1{
