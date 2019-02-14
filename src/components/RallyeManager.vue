@@ -1,6 +1,6 @@
 <template>
-  <div class="">
-    <button @click="logPlayers()"> refresh</button>
+  <div class="form-style-6">
+    <button @click="logPlayers()"> Refresh</button>
     <h1>{{teams.length}} palyers</h1>
     <div v-for="(team,indexT) in teams" v-bind:key="team.name">
       <div>
@@ -16,7 +16,7 @@
                 <th v-for="n in answer.choices" :key ="n"> response id </th>
              </tr>
              <tr>
-                <th v-for="n in answer.choices" :key ="n"> team answer </th>
+                <td v-for="n in answer.choices" :key ="n"> team answer </td>
              </tr>
            </table>
         </div>
@@ -164,8 +164,8 @@ export default {
 <style scoped>
 #mapid { 
   display: -webkit-inline-box;
-  height: 70vw;
-  width: 70vw;
+  height: 50vw;
+  width: 90%;
 
 }
 .horizontal{
@@ -176,7 +176,100 @@ export default {
   width: 15%;
 }
 table{
-      width: 70%;
+  width: 70%;
+  border-spacing: 0px;
+  border-collapse: collapse;
+}
+th{
+  border: solid 1px;
+  background: #f2f2f2;
+}
+
+td{
+  border: solid 1px;
+  background: #f2f2f2;
+
+}
+
+
+
+
+
+.form-style-6{
+	font: 95% Arial, Helvetica, sans-serif;
+	max-width: 60%;
+	margin: 10px auto;
+	padding: 16px;
+	background: #F7F7F7;
+}
+.form-style-6 h1{
+	background: #43D1AF;
+	padding: 20px 0;
+	font-size: 140%;
+	font-weight: 300;
+	text-align: center;
+	color: #fff;
+	margin: 0px 0px 3px 0px;
+}
+.form-style-6 input[type="text"],
+.form-style-6 input[type="date"],
+.form-style-6 input[type="datetime"],
+.form-style-6 input[type="email"],
+.form-style-6 input[type="number"],
+.form-style-6 input[type="search"],
+.form-style-6 input[type="time"],
+.form-style-6 input[type="url"],
+.form-style-6 textarea,
+.form-style-6 select 
+{
+	-webkit-transition: all 0.30s ease-in-out;
+	-moz-transition: all 0.30s ease-in-out;
+	-ms-transition: all 0.30s ease-in-out;
+	-o-transition: all 0.30s ease-in-out;
+	outline: none;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 70%;
+	background: #fff;
+	margin-bottom: 4%;
+	border: 1px solid #ccc;
+	padding: 5px;
+	color: #555;
+	font: 95% Arial, Helvetica, sans-serif;
+}
+.form-style-6 input[type="text"]:focus,
+.form-style-6 input[type="date"]:focus,
+.form-style-6 input[type="datetime"]:focus,
+.form-style-6 input[type="email"]:focus,
+.form-style-6 input[type="number"]:focus,
+.form-style-6 input[type="search"]:focus,
+.form-style-6 input[type="time"]:focus,
+.form-style-6 input[type="url"]:focus,
+.form-style-6 textarea:focus,
+.form-style-6 select:focus
+{
+	box-shadow: 0 0 5px #43D1AF;
+	border: 1px solid #43D1AF;
+}
+
+.form-style-6 button[type="submit"],
+.form-style-6 button[type="button"],
+.form-style-6 button{
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 40%;
+	background: #43D1AF;
+	border: 2px solid #30C29E;
+	color: #fff;
+  padding: 10px;
+  margin: 0px 0px 3px 0px;
+}
+.form-style-6 button[type="submit"]:hover,
+.form-style-6 button[type="button"]:hover,
+.form-style-6 button{
+	background: #2EBC99;
 }
 
 </style>
