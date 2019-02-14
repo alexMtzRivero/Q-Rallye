@@ -26,8 +26,8 @@
               <label v-if="shown">Rallye</label>
             </li>
           </router-link>
-          <li>
-            <img src="https://cdn4.iconfinder.com/data/icons/miu/24/common-logout-signout-exit-glyph-256.png" class="icon" v-if="fb.auth().currentUser" @click="logOut()"/>
+          <li @click="logOut()" v-if="fb.auth().currentUser">
+            <img src="https://cdn4.iconfinder.com/data/icons/miu/24/common-logout-signout-exit-glyph-256.png" class="icon"/>
             <label v-if="shown">Déconnexion</label>
           </li>
         </ul>
@@ -56,8 +56,8 @@ export default {
   },
   methods:{
         change(){
-          this.shown = !this.shown
-          if(this.shown) this.state = "fermer"
+          this.shown = !this.shown;
+          if(this.shown) this.state = "fermer";
         },
         logOut: function(){
           firebase.auth().signOut().then(function() {
