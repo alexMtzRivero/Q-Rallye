@@ -12,13 +12,14 @@
       </div>
     
     </div>
-  
   </div>
   
 </template>
 
 <script>
-
+import quizzes from './components/quizzes.vue'
+import questions from './components/questions.vue'
+import Team from'./components/Team/Team.vue'
 import RallyeManager from "./components/RallyeManager.vue"
 import  sideBar from './components/sideBar.vue'
 import CreateAccount from "./components/Login/CreateAccount.vue"
@@ -27,20 +28,21 @@ import Rules from "./components/rules.vue"
 export default {
   name: 'app',
   components: {
+  quizzes,
+  questions,
   RallyeManager,
   sideBar,
   CreateAccount,
   Login,
   Rules,
-  RallyeManager
+  RallyeManager,
+  Team
   },
-  methods:{
+
+  methods: {
     
   },
   mounted(){
-   
-    
-  
     
   }
 }
@@ -59,6 +61,6 @@ export default {
   display: flex;
 }
 .main{
-  width: -webkit-fill-available;
+  width: 100%;
 }
 </style>
