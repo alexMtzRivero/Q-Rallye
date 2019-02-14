@@ -1,20 +1,20 @@
 <template>
   <div :class="shown?'holder-hide':'holder-show'">
-        <button @mousedown="change">Hide</button>
-
       <div>
+        <img v-if="shown" src="../assets/left_arrow.png" id="left_arrow" class="icon" @click="change"/>
+        <img v-else src="../assets/burger.png" class="icon" @click="change"/>
         <ul>
           <router-link to ="/teams">
             <li>
               <img src="https://static.thenounproject.com/png/8501-200.png" 
               alt="" class="icon"> 
-              <label v-if="shown" >Teams</label>
+              <label v-if="shown" >Équipes</label>
             </li>
           </router-link>
           <router-link to ="/rules">
             <li >
               <img src="https://cdn4.iconfinder.com/data/icons/files-13/100/circle-things-41-512.png" alt="" class="icon">
-              <label v-if="shown">Rules</label>
+              <label v-if="shown">Règles</label>
             </li>
           </router-link>
           <router-link to ="/quizz">
@@ -26,8 +26,11 @@
               <label v-if="shown">Rallye</label>
             </li>
           </router-link>
+          <li>
+            <img src="https://cdn4.iconfinder.com/data/icons/miu/24/common-logout-signout-exit-glyph-256.png" class="icon" v-if="fb.auth().currentUser" @click="logOut()"/>
+            <label v-if="shown">Déconnexion</label>
+          </li>
         </ul>
-        <label  v-if="fb.auth().currentUser" @click="logOut()">Logout</label>
       </div>
         
   </div>
@@ -47,13 +50,14 @@ export default {
   data(){
     return{
           fb : firebase,
-          shown : false
+          shown : false,
+          state: "ouvrir"
     }
   },
   methods:{
         change(){
-          
           this.shown = !this.shown
+          if(this.shown) this.state = "fermer"
         },
         logOut: function(){
           firebase.auth().signOut().then(function() {
@@ -114,7 +118,7 @@ export default {
   height: 100%;
 }
 .holder-show div{
-  position: relative;
+  position: fixed;
   transition: 0.5s;
   width: 60px;
   background-color: #2db998;
@@ -152,5 +156,8 @@ a:hover, a:visited, a:link, a:active
     text-decoration: none;
 }
 
+#left_arrow {
+  position: right;
+}
 
 </style>
