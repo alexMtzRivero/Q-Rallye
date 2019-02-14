@@ -1,14 +1,13 @@
 <template>
     <div>
-        <button @click="log()">show array</button>
-        <div v-for="(quiz,index) in quizzes"  v-bind:key="quiz.id">
+        <div class="form-style-6" v-for="(quiz,index) in quizzes"  v-bind:key="quiz.id">
             <h1>{{quiz.id}}</h1>
             <div :class="`${(showedQR == index)?'shown':'hidden'} canvas` ">
                 <div  id="qrholder" ref ="quizhoder"></div>
                  <button @click="print(index,quiz.id)"> print </button>
             </div>
-            
-            <button @click="makeCode(index,quiz.id)"> show QR</button>
+            <br>
+            <button @click="makeCode(index,quiz.id)"> show QR</button><br>
             <div v-for="question in quiz.questions" :key ="question.question+quiz.id">
                 <h3>{{question.question}}</h3>
                 <ol >
@@ -18,16 +17,18 @@
             <button type="button" v-if="index != idDivEdited" @click="selectToAddQuestion(index)">Ajouter une question</button>
 
             <div v-if="index == selectedQuiz">
-                
-                <input type="text" placeholder="question" v-model="tempQuestion.question">
+                <label>Question :</label><br>
+                <input type="text" v-model="tempQuestion.question">
                 <form action="" >
+                    <label>Réponses :</label><br>
+                    <label>(cocher la bonne réponse)</label><br>
                     <div v-for="(answer,indexT) in tempQuestion.choices" :key="`${indexT}+${answer}`">
                         <input  type="radio" name="answer" :value="indexT" v-model="tempQuestion.goodAnswer" >{{answer}} <br>
                     </div>
                     
                 </form>
-                <input type="text" v-model="tempOption">
-                <button @click="addOptionToTemp(tempOption)">add Option</button>
+                <input type="text" v-model="tempOption"><br><br>
+                <button @click="addOptionToTemp(tempOption)">Ajouter la réponse</button>
                 <br>
                 <button type="button" @click="pushTempTo(index)">Ajouter</button>
             </div>
@@ -172,7 +173,9 @@ export default {
 <style scoped>
 .canvas{
     padding: 0px 50%;
+    margin-left: -75px;
     /* transform: translateX(-10vh); */
+    
 }   
 .shown{
 
@@ -182,6 +185,93 @@ visibility: hidden;
 height: 0px;
 }
 
+h1{
+	background: #43D1AF;
+	padding: 20px 0;
+	font-size: 140%;
+	font-weight: 300;
+	text-align: center;
+	color: #fff;
+	margin: 10px auto;
+	padding: 16px;
+}
+
+.form-style-6{
+	font: 95% Arial, Helvetica, sans-serif;
+	max-width: 70%;
+	margin: 10px auto;
+	background: #F7F7F7;
+}
+.form-style-6 h1{
+	background: #43D1AF;
+	font-size: 140%;
+	font-weight: 300;
+	text-align: center;
+	color: #fff;
+}
+.form-style-6 input[type="text"],
+.form-style-6 input[type="date"],
+.form-style-6 input[type="datetime"],
+.form-style-6 input[type="email"],
+.form-style-6 input[type="number"],
+.form-style-6 input[type="search"],
+.form-style-6 input[type="time"],
+.form-style-6 input[type="url"],
+.form-style-6 textarea,
+.form-style-6 select 
+{
+	-webkit-transition: all 0.30s ease-in-out;
+	-moz-transition: all 0.30s ease-in-out;
+	-ms-transition: all 0.30s ease-in-out;
+	-o-transition: all 0.30s ease-in-out;
+	outline: none;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 60%;
+	background: #fff;
+	border: 1px solid #ccc;
+	padding: 5px;
+	color: #555;
+	font: 95% Arial, Helvetica, sans-serif;
+}
+.form-style-6 input[type="text"]:focus,
+.form-style-6 input[type="date"]:focus,
+.form-style-6 input[type="datetime"]:focus,
+.form-style-6 input[type="email"]:focus,
+.form-style-6 input[type="number"]:focus,
+.form-style-6 input[type="search"]:focus,
+.form-style-6 input[type="time"]:focus,
+.form-style-6 input[type="url"]:focus,
+.form-style-6 textarea:focus,
+.form-style-6 select:focus
+{
+	box-shadow: 0 0 5px #43D1AF;
+	padding: 5px;
+	border: 1px solid #43D1AF;
+}
+
+.form-style-6 button[type="submit"],
+.form-style-6 button[type="button"],
+.form-style-6 button
+{
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 40%;
+	padding: 5px;
+	background: #43D1AF;
+	border: 2px solid #30C29E;
+	color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.form-style-6 button[type="submit"]:hover,
+.form-style-6 button[type="button"]:hover,
+.form-style-6 button:hover
+{
+	background: #2EBC99;
+}
 
 </style>
 
