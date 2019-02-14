@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "firebase": "^5.8.2",
+    "v-color": "^1.1.2",
     "vue": "^2.5.22",
+    "vue-color-picker-wheel": "^0.4.3",
     "vue-router": "^3.0.2"
   },
   "devDependencies": {
