@@ -121,7 +121,7 @@ export default {
     },
     mapInit: function () {
       var mymap = L.map('mapid', {
-        center: [51.505, -0.09],
+        center: [45.188096, 5.718452],
         zoom: 13
       })
       // conects the map with the open street maps data
@@ -133,13 +133,13 @@ export default {
       );
       this.tileLayer.addTo(mymap);
 
-      var marker = L.marker([51.5, -0.09]).addTo(mymap);
+      var marker = L.marker([45.188096, 5.718452]).addTo(mymap);
 
-      var circle = L.circle([51.508, -0.11], {
+      var circle = L.circle([45.188096, 5.718452], {
         color: 'red',
         fillColor: '#f03',
         fillOpacity: 0.5,
-        radius: 500
+        radius: 50
       }).addTo(mymap);
 
       
