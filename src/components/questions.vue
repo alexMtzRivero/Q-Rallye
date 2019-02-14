@@ -1,8 +1,13 @@
 <template>
     <div>
         <button @click="log()">show array</button>
-        <div v-for="(quiz,index) in quizzes" v-bind:key="quiz.id">
+        <div v-for="(quiz,index) in quizzes"  v-bind:key="quiz.id">
             <h1>{{quiz.id}}</h1>
+            <div class="canvas">
+                <div id="qrholder" ref ="quizhoder"></div>
+                </div>
+            
+            <button @click="makeCode(index,quiz.id)"> show QR</button>
             <div v-for="question in quiz.questions" :key ="question.question+quiz.id">
                 <h3>{{question.question}}</h3>
                 <ol >
@@ -28,8 +33,9 @@
         </div>
     </div>
 </template>
-
 <script>
+const QRCode = require('../Js/qrcode.js').default
+console.log(QRCode);
 import firebase from "firebase";
 
 export default {
@@ -120,15 +126,34 @@ export default {
                 this.tempQuestion = {}
                 this.$forceUpdate();
             },
+            makeCode(ref,text){
+                console.log(this.$refs.quizhoder[ref]);
+                
+                    var qrcode = new QRCode(this.$refs.quizhoder[ref], {
+                            width : 100,
+                            height : 100,
+                            margin : '100px'
+                        });
+                    qrcode.makeCode(text);     
+            }
         },
         mounted(){
             this.refreshList();   
+            
+            
+                    
         },
     }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.canvas{
+    padding: 0px 50%;
+    /* transform: translateX(-10vh); */
+}   
+
+
 
 </style>
 
