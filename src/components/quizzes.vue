@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <h2>Ajouter un quiz :</h2>
+    <div class="form-style-6">
+        <h1>Ajouter un quiz :</h1>
         <input v-model="tempQuiz" type="text" id="nomQuiz"/>
         <br/><br/>
         <button v-on:click="addQuiz">Ajouter</button>
@@ -91,6 +91,94 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+h1{
+	background: #43D1AF;
+	padding: 20px 0;
+	font-size: 140%;
+	font-weight: 300;
+	text-align: center;
+	color: #fff;
+	margin: 10px auto;
+	padding: 16px;
+}
+
+.form-style-6{
+	font: 95% Arial, Helvetica, sans-serif;
+	max-width: 70%;
+	margin: 10px auto;
+	background: #F7F7F7;
+}
+.form-style-6 h1{
+	background: #43D1AF;
+	font-size: 140%;
+	font-weight: 300;
+	text-align: center;
+	color: #fff;
+}
+.form-style-6 input[type="text"],
+.form-style-6 input[type="date"],
+.form-style-6 input[type="datetime"],
+.form-style-6 input[type="email"],
+.form-style-6 input[type="number"],
+.form-style-6 input[type="search"],
+.form-style-6 input[type="time"],
+.form-style-6 input[type="url"],
+.form-style-6 textarea,
+.form-style-6 select 
+{
+	-webkit-transition: all 0.30s ease-in-out;
+	-moz-transition: all 0.30s ease-in-out;
+	-ms-transition: all 0.30s ease-in-out;
+	-o-transition: all 0.30s ease-in-out;
+	outline: none;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 60%;
+	background: #fff;
+	border: 1px solid #ccc;
+	padding: 5px;
+	color: #555;
+	font: 95% Arial, Helvetica, sans-serif;
+}
+.form-style-6 input[type="text"]:focus,
+.form-style-6 input[type="date"]:focus,
+.form-style-6 input[type="datetime"]:focus,
+.form-style-6 input[type="email"]:focus,
+.form-style-6 input[type="number"]:focus,
+.form-style-6 input[type="search"]:focus,
+.form-style-6 input[type="time"]:focus,
+.form-style-6 input[type="url"]:focus,
+.form-style-6 textarea:focus,
+.form-style-6 select:focus
+{
+	box-shadow: 0 0 5px #43D1AF;
+	padding: 5px;
+	border: 1px solid #43D1AF;
+}
+
+.form-style-6 button[type="submit"],
+.form-style-6 button[type="button"],
+.form-style-6 button
+{
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 40%;
+	padding: 5px;
+	background: #43D1AF;
+	border: 2px solid #30C29E;
+	color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.form-style-6 button[type="submit"]:hover,
+.form-style-6 button[type="button"]:hover,
+.form-style-6 button:hover
+{
+	background: #2EBC99;
+}
 
 </style>
 
