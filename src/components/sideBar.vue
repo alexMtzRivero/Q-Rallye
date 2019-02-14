@@ -28,7 +28,7 @@
           </router-link>
         </ul>
       </div>
-        <a  v-if="fb.auth().currentUser" @click="logOut()">Logout</a>
+        <label  v-if="fb.auth().currentUser" @click="logOut()">Logout</label>
   </div>
 </template>
 
@@ -57,6 +57,7 @@ export default {
         logOut: function(){
           firebase.auth().signOut().then(function() {
               // Sign-out successful.
+              this.$parent.testLogin();
             }).catch(function(error) {
               // An error happened.
             });

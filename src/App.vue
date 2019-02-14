@@ -25,6 +25,11 @@ import  sideBar from './components/sideBar.vue'
 import CreateAccount from "./components/Login/CreateAccount.vue"
 import Login from "./components/Login/Login.vue"
 import Rules from "./components/rules.vue"
+
+
+import firebase from "firebase";
+
+
 export default {
   name: 'app',
   components: {
@@ -40,9 +45,37 @@ export default {
   },
 
   methods: {
+    addLoginListner:function () {
+
+
+    firebase.auth().onAuthStateChanged((user)=> {
+          if (user) {
+            // User is signed in.
+            this.$router.push('/rallyeManager');
+          } else {
+            // No user is signed in.
+            this.$router.push('/login');
+          }
+        });
+
+ 
+     
+    },
+     testLogin:function () {
+     var user = firebase.auth().currentUser;
+
+        if (user) {
+          // User is signed in.
+           //nothing
+        } else {
+          // No user is signed in.
+          this.$router.push('/login');
+        }
+     }
     
   },
   mounted(){
+    this.addLoginListner();
     
   }
 }

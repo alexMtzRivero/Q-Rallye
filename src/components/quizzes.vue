@@ -77,7 +77,6 @@ export default {
                 var nom_quiz = this.quiz.nomQuiz;
                 db.collection('Quizzes').get().then(snap => {
                     this.quizzes = snap.docs
-                    console.log(this.quizzes);
                     
                 }).catch(
                     error => {
