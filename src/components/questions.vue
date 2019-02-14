@@ -67,6 +67,8 @@ export default {
             //good
             refreshList: function(){
                 var db = firebase.firestore();
+                this.quizzes = [];
+                this.$forceUpdate();
                 db.collection('Quizzes').get().then((querySnapshot) => {
                     querySnapshot.docs.forEach(element => {
                         var toPush = element.data();
@@ -96,7 +98,6 @@ export default {
                     querySnapshot.docs.forEach(element => {
                         var toPush = element.data();
                         toPush.id = element.id;
-                        console.log(toPush);
                         quiz.questions.push(toPush);
                         
                     });
