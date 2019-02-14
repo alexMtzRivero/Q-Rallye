@@ -1,49 +1,66 @@
 <template>
   <div id="app">
     <div class="horizontal">
+     
+     <sideBar>
+       
+     </sideBar>
+    
       <div class="main">
         <router-view>
-          
         </router-view>
       </div>
+    
     </div>
-    <img alt="Vue logo" src="./assets/logo.png">
-    <Team></Team>
-  
-
   </div>
+  
 </template>
 
 <script>
+import quizzes from './components/quizzes.vue'
+import questions from './components/questions.vue'
 import Team from'./components/Team/Team.vue'
-
-var firebaseController = require('./Js/firebaseController.js').default;
-
+import RallyeManager from "./components/RallyeManager.vue"
+import  sideBar from './components/sideBar.vue'
+import CreateAccount from "./components/Login/CreateAccount.vue"
+import Login from "./components/Login/Login.vue"
+import Rules from "./components/rules.vue"
 export default {
   name: 'app',
   components: {
-    Team,
+  quizzes,
+  questions,
+  RallyeManager,
+  sideBar,
+  CreateAccount,
+  Login,
+  Rules,
+  RallyeManager,
+  Team
   },
 
   methods: {
     
   },
-  mounted(){    
-    //firebaseController.pushToDatabase();
-
-  
+  mounted(){
     
   }
 }
 </script>
 
 <style>
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+.horizontal{
+  display: flex;
+}
+.main{
+  width: 100%;
 }
 </style>

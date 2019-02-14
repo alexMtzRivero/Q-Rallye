@@ -5,8 +5,9 @@
 </template>
 
 <script>
+
 export default {
-  name: 'name',
+  name: 'ForgotPass',
   components:{
 
   },
@@ -16,7 +17,7 @@ export default {
   },
   data(){
     return{
-
+        
     }
   },
   methods:{
