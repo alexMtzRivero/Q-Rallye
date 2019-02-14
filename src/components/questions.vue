@@ -5,6 +5,7 @@
             <h1>{{quiz.id}}</h1>
             <div :class="`${(showedQR == index)?'shown':'hidden'} canvas` ">
                 <div  id="qrholder" ref ="quizhoder"></div>
+                 <button @click="print(index,quiz.id)"> print </button>
             </div>
             
             <button @click="makeCode(index,quiz.id)"> show QR</button>
@@ -70,7 +71,19 @@ export default {
                this.tempQuestion.choices.push(option); 
                this.$forceUpdate();
             },
-          
+           print:function (ref,quizid) {
+                
+                console.log(this.$refs.quizhoder[ref].innerHTML);
+                var newWindow = window.open();
+                newWindow.document.write('<html><head><title>Print it!</title><style>img{border:60px white double; background:black; margin: 50% 50% 0 50%;width: 400px;display: block;transform: translateX(-50%)translateY(-50%);}h1{text-align: center;font-size: 70px;}</style></head><body>');
+                newWindow.document.write(this.$refs.quizhoder[ref].innerHTML);
+
+                newWindow.document.write(`<h1>${quizid}</h1>`);
+                newWindow.document.write('</body></html>');
+              
+                newWindow.print();
+                newWindow.close();
+            },
             //good
             refreshList: function(){
                 var db = firebase.firestore();
@@ -129,8 +142,6 @@ export default {
             },
             makeCode(ref,text){
                
-              
-                console.log(this.qrCodes[ref]);
                 if(this.qrCodes[ref]== null){
                     var qrcode = new QRCode(this.$refs.quizhoder[ref], {
                             width : 150,
