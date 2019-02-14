@@ -7,7 +7,9 @@
         <img src="../../assets/bin.png" @click="deleteTeam(index, team.id)"/>
         <p><b class="champ">Couleur : </b>{{team.color}} <br>
         <b class="champ">Mot de passe : </b>{{team.password}}</p>
-       
+        <Colorpicker/>
+      
+
         <div v-for="runner in runners[index]" v-bind:key="runner.id" class="Runner">
           <p><b class="champ">Nom : </b>{{runner.lastName}} <br>
           <b class="champ">Prénom : </b>{{runner.firstName}}</p>
@@ -37,9 +39,10 @@
 <script>
 
 import firebase from "firebase";
+
 export default {
   name: 'ListTeam',
- 
+
   data(){
     return{
         teams:[],
@@ -54,10 +57,11 @@ export default {
         tempFirstName:"",
         tempLastName:"",
         tempCb:true,
-        show:false
+        show:false,
     }
   },
   methods:{
+    
     test(){
       console.log(this.teams);
       

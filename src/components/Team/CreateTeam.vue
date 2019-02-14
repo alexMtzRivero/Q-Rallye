@@ -4,6 +4,7 @@
     <label for="teamName">Nom d'équipe :</label><br>
     <input id="teamName" type="text" v-model="tempName" />
     <br>
+    <ColorPicker :width="150" :height="150" :disabled="false" startColor=tempColor @colorChange="onColorChange" v-model="tempColor"></ColorPicker>
     <label for="color">Couleur :</label><br>
     <input id="color" type="text" v-model="tempColor" />
     <br>
@@ -14,9 +15,14 @@
 <script>
 import firebase from "firebase";
 
+import ColorPicker from 'vue-color-picker-wheel';
+
 
 export default {
   name: 'CreateTeam',
+   components: {
+    ColorPicker,
+  },
   data(){
     return{
         team:{ 
@@ -29,7 +35,7 @@ export default {
         },
         name:"",
         tempName:"",
-        tempColor:"",
+        tempColor:"#ff0000",
     }
   },
   methods:{
@@ -71,6 +77,9 @@ export default {
                 this.team.password = Math.floor(Math.random()*999999);
                 console.log(this.team.password);
             }while(this.team.password.length < 5);
+        },
+        onColorChange(color) {
+            //console.log('Color has changed to: ', color);
         }
 
   },
