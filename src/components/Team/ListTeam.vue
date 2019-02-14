@@ -4,6 +4,7 @@
     <h1>Liste des équipes :</h1>
     <div v-for="(team,index) in teams" v-bind:key="team.id" class="form-style-6">
         <h2>{{team.id}}</h2>
+        <img src="../../assets/bin.png" @click="deleteTeam(index, team.id)"/>
         <p><b class="champ">Couleur : </b>{{team.color}} <br>
         <b class="champ">Mot de passe : </b>{{team.password}}</p>
         <Colorpicker/>
@@ -12,7 +13,7 @@
         <div v-for="runner in runners[index]" v-bind:key="runner.id" class="Runner">
           <p><b class="champ">Nom : </b>{{runner.lastName}} <br>
           <b class="champ">Prénom : </b>{{runner.firstName}}</p>
-          <button type="button" @click="delRunner(runner,team.id)">Supprimer</button>
+          <button type="button" @click="delRunner(runner,team.id)">Supprimer le membre</button>
         </div>
         <button type="button" v-if="index != idDivEdited" @click="showRunner(index)" >Ajouter un membre</button>
 
@@ -116,7 +117,12 @@ export default {
         
         this.refreshList();
       });
-      
+    },deleteTeam: function (index,ref){
+      var db = firebase.firestore();
+      db.collection('Groups').doc(ref).delete().then(refresh =>{
+        console.log("deleted");
+      });
+      this.teams.splice(index, 1);
     },
     resetField: function(){
         this.tempFirstName = "";

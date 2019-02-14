@@ -2,7 +2,7 @@
   <div id="app">
     <div class="horizontal">
      
-     <sideBar>
+     <sideBar ref="sideBar">
        
      </sideBar>
     
@@ -56,6 +56,7 @@ export default {
             // No user is signed in.
             this.$router.push('/login');
           }
+          this.$refs.sideBar.$forceUpdate()
         });
 
  
@@ -66,7 +67,6 @@ export default {
 
         if (user) {
           // User is signed in.
-           //nothing
         } else {
           // No user is signed in.
           this.$router.push('/login');
@@ -96,4 +96,7 @@ export default {
 .main{
   width: 100%;
 }
+
+
+
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div :class="shown?'holder-hide':'holder-show'">
-        <button @mousedown="change">hide</button>
+        <button @mousedown="change">Hide</button>
 
       <div>
         <ul>
@@ -27,8 +27,9 @@
             </li>
           </router-link>
         </ul>
-      </div>
         <label  v-if="fb.auth().currentUser" @click="logOut()">Logout</label>
+      </div>
+        
   </div>
 </template>
 
@@ -73,30 +74,66 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.holder-hide{
-position: absolute;
+.holder-hide button[type="submit"],
+.holder-hide button[type="button"],
+.holder-hide button{
+	background: #000000;
+	border: 2px solid #30C29E;
+	color: #2EBC99;
+  width: 200px;
+  transition: 0.5s;
+  
+}
+.holder-hide button[type="submit"]:hover,
+.holder-hide button[type="button"]:hover,
+.holder-hide button{
+	background: #000000;
+}
+
+.holder-show button[type="submit"],
+.holder-show button[type="button"],
+.holder-show button{
+	width: 60px;
+	background: #000000;
+	border: 2px solid #30C29E;
+	color: #2EBC99;
+  transition: 0.5s;
+
+}
+.holder-show button[type="submit"]:hover,
+.holder-show button[type="button"]:hover,
+.holder-show button{
+	background: #000000;
+}
+
+.holder-hide div{
+  position: relative;
   transition: 0.5s;
   width: 200px;
-  height: 100vh;
-  background-color: #19212b;
+  background-color: #2db998;
+  height: 100%;
 }
-.holder-show{
-position: absolute;
-
-transition: 0.5s;
+.holder-show div{
+  position: relative;
+  transition: 0.5s;
   width: 60px;
-  height: 100vh;
-  background-color: #19212b;
+  background-color: #2db998;
+  height: 100%;
 }
 li{
   display: flex;
-    color: white;
-    margin: 16px 20%;
+  color: #000000;
+  margin: 16px 20%;
+  margin-top: 0px;
+  margin-block-end: 0px;
+  padding-top: 16px;
     
 }
 ul{
   width: 100%;
   padding:0px;
+  margin-top: 0px;
+  margin-block-end: 0px;
 }
 .icon{
   width: 32px;
@@ -104,10 +141,16 @@ ul{
 }
 label{
   text-align: center;
-  padding-left: 16px;
-display: inline-block;
+  margin: 3px;
+  display: inline-block;
   vertical-align: middle;
   line-height: normal;
 }
+
+a:hover, a:visited, a:link, a:active
+{
+    text-decoration: none;
+}
+
 
 </style>
