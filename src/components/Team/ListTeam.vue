@@ -117,8 +117,8 @@ export default {
       var db = firebase.firestore();
       db.collection('Groups').doc(ref).delete().then(refresh =>{
         console.log("deleted");
-        this.refreshList();
       });
+      this.teams.splice(index, 1);
     },
     resetField: function(){
         this.tempFirstName = "";
