@@ -4,6 +4,7 @@
     <h1>Liste des équipes :</h1>
     <div v-for="(team,index) in teams" v-bind:key="team.id" class="form-style-6">
         <h2>{{team.id}}</h2>
+        <img src="../../assets/bin.png"/>
         <p><b class="champ">Couleur : </b>{{team.color}} <br>
         <b class="champ">Mot de passe : </b>{{team.password}}</p>
        
