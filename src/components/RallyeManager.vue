@@ -173,7 +173,7 @@ export default {
       width: -webkit-fill-available;
 }
 .listSection{
-  width: 15%;
+  padding-right: 4%;
 }
 table{
   width: 70%;
@@ -197,7 +197,7 @@ td{
 
 .form-style-6{
 	font: 95% Arial, Helvetica, sans-serif;
-	max-width: 60%;
+	max-width: 85%;
 	margin: 10px auto;
 	padding: 16px;
 	background: #F7F7F7;
