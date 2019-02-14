@@ -27,8 +27,9 @@
             </li>
           </router-link>
         </ul>
-      </div>
         <label  v-if="fb.auth().currentUser" @click="logOut()">Logout</label>
+      </div>
+        
   </div>
 </template>
 

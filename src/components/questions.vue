@@ -3,7 +3,7 @@
         <button @click="log()">show array</button>
         <div v-for="(quiz,index) in quizzes"  v-bind:key="quiz.id">
             <h1>{{quiz.id}}</h1>
-            <div :class="(showedQR == index)?'shown':'hidden'">
+            <div :class="`${(showedQR == index)?'shown':'hidden'} canvas` ">
                 <div  id="qrholder" ref ="quizhoder"></div>
             </div>
             
