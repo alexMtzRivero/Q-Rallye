@@ -42,11 +42,14 @@ export default {
   data() {
     return {
       teams: [],
-      quizzes: []
+      quizzes: [],
+      mymap:""
     }
   },
   methods: {
+
     changeDisplay:function (index) {
+      this.zoomInTeam();
       this.teams[index].displayed = !this.teams[index].displayed;
     },
     logPlayers: function () {
@@ -66,7 +69,7 @@ export default {
 
           }
          
-        var polyline = L.polyline(path, {color: `${team.color}`}).addTo(map);
+        var polyline = L.polyline(path, {color: `${team.color}`}).addTo(this.mymap);
                   
         }
     },
@@ -119,8 +122,11 @@ export default {
       })
 
     },
+    zoomInTeam: function () {
+      this.mymap.fitBounds([[45.188096, 5.718452],[45.199096, 5.818452]]);
+    },
     mapInit: function () {
-      var mymap = L.map('mapid', {
+      this.mymap = L.map('mapid', {
         center: [45.188096, 5.718452],
         zoom: 13
       })
@@ -131,16 +137,16 @@ export default {
           attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         }
       );
-      this.tileLayer.addTo(mymap);
+      this.tileLayer.addTo(this.mymap);
 
-      var marker = L.marker([45.188096, 5.718452]).addTo(mymap);
+      var marker = L.marker([45.188096, 5.718452]).addTo(this.mymap);
 
       var circle = L.circle([45.188096, 5.718452], {
         color: 'red',
         fillColor: '#f03',
         fillOpacity: 0.5,
         radius: 50
-      }).addTo(mymap);
+      }).addTo(this.mymap);
 
       
     }
