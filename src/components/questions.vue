@@ -30,7 +30,7 @@
                 <input type="text" v-bind:style="{'border-color': optionInputBorder}" v-model="tempOption"><br><br>
                 <button @click="addOptionToTemp">Ajouter la réponse</button>
                 <br>
-                <button type="button" v-if="Object.keys(tempQuestion).includes('choices')" @click="pushTempTo(index)">Ajouter</button>
+                <button type="button" v-if="Object.keys(tempQuestion).includes('choices') && tempQuestion.choices.length > 1" @click="pushTempTo(index)">Ajouter</button>
                 <br>
                 <label class="errorMessage" v-if='errorMessage.length!=0 && selectedQuiz == index'>{{errorMessage}}</label>
             </div>
@@ -138,14 +138,13 @@ export default {
             },
             //good
             pushTempTo(quizzIndex) {
-                if(this.tempQuestion.choices.length > 1 && Object.keys(this.tempQuestion).includes('question') && this.tempQuestion.question.length != 0 && Object.keys(this.tempQuestion).includes('goodAnswer')){
+                if(Object.keys(this.tempQuestion).includes('question') && this.tempQuestion.question.length != 0 && Object.keys(this.tempQuestion).includes('goodAnswer')){
                     var db = firebase.firestore();        
                     var ind = (this.quizzes[quizzIndex].questions.length)?  this.quizzes[quizzIndex].questions.length:0;
                     var id = this.quizzes[quizzIndex].id
                     db.collection("Quizzes/"+id+"/Questions").doc("question"+ind).set(this.tempQuestion)
                     .then((docRef) => {
                         this.refreshList();
-                        console.log("Document written with ID: ", docRef.id);
                     })
                     .catch(function(error) {
                         console.error("Error adding document: ", error);
@@ -158,8 +157,6 @@ export default {
                 else{                    
                     if(!Object.keys(this.tempQuestion).includes('question') || this.tempQuestion.question.length == 0)
                         this.questionTitleInput = '#ff0000';
-                    if(this.tempQuestion.choices.length < 2)
-                        this.errorMessage = 'vous devez ajouter 2 réponses au minimum';
                     else if(!Object.keys(this.tempQuestion).includes('goodAnswer'))
                         this.errorMessage = 'vous devez cocher la bonne réponse';
                 }

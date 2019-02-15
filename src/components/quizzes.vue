@@ -37,7 +37,7 @@ export default {
                     this.resetQuiz();
                     this.resetField();
                     this.retrieveQuizzes();
-                    this.inputBorder = '#ccc'
+                    this.inputBorder = '#ccc';
                 }else{
                     this.inputBorder = '#ff0000';
                 }
