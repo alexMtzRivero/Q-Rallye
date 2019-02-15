@@ -3,22 +3,22 @@
         <div class="form-style-6" v-for="(quiz,index) in quizzes"  v-bind:key="`${quiz.id}+${index}`">
             <h1>{{quiz.id}}</h1>
             <div :class="`${(showedQR == index)?'shown':'hidden'} canvas` ">
-                <div  id="qrholder" ref ="quizhoder"></div>
-                 <button @click="print(index,quiz.id)"> print </button>
+                <div  id="qrholder" ref ="quizhoder"></div><br>
+                <button @click="print(index,quiz.id)"> Imprimer </button>
             </div>
             <br>
-            <button @click="makeCode(index,quiz.id)"> show QR</button><br>
+            <button @click="makeCode(index,quiz.id)"> Voir le QR code</button><br>
             <div v-for="question in quiz.questions" :key ="`${question.question}+${quiz.id}`">
-                <h3>{{question.question}}</h3>
-                <ol >
+                <h3 class="questionStyle">{{question.question}}</h3>
+                <ul  class="listAnswers">
                     <li v-for="(pAnswer,indexA) in question.choices" :key ="`${pAnswer}+${indexA}`">{{pAnswer}} </li>
-                </ol>
+                </ul>
             </div>
             <button type="button" v-if="index != idDivEdited" @click="selectToAddQuestion(index)">Ajouter une question</button>
 
             <div v-if="index == selectedQuiz">
                 <label>Question :</label><br>
-                <input type="text" v-model="tempQuestion.question">
+                <input type="text" v-bind:style="{'border-color': questionTitleInput}" v-model="tempQuestion.question">
                 <form action="" >
                     <label>Réponses :</label><br>
                     <label>(cocher la bonne réponse)</label><br>
@@ -27,10 +27,12 @@
                     </div>
                     
                 </form>
-                <input type="text" v-model="tempOption"><br><br>
-                <button @click="addOptionToTemp(tempOption)">Ajouter la réponse</button>
+                <input type="text" v-bind:style="{'border-color': optionInputBorder}" v-model="tempOption"><br><br>
+                <button @click="addOptionToTemp">Ajouter la réponse</button>
                 <br>
-                <button type="button" @click="pushTempTo(index)">Ajouter</button>
+                <button type="button" v-if="Object.keys(tempQuestion).includes('choices') && tempQuestion.choices.length > 1" @click="pushTempTo(index)">Ajouter</button>
+                <br>
+                <label class="errorMessage" v-if='errorMessage.length!=0 && selectedQuiz == index'>{{errorMessage}}</label>
             </div>
         </div>
     </div>
@@ -50,9 +52,12 @@ export default {
                 idDivEdited:-1,//?????
                 tempCb:true,
                 tempOption : "",
+                optionInputBorder: '',
+                questionTitleInput:'',
                 tempQuestion:[],
                 selectedQuiz:-1,
-                show:false
+                show:false,
+                errorMessage:""
             }
         },
         methods: {
@@ -61,16 +66,21 @@ export default {
                 
             },
             selectToAddQuestion(quizzIndex){
-                this.tempQuestion = {}
+                this.tempQuestion = {};
                 this.selectedQuiz =  (quizzIndex == this.selectedQuiz)? -1: quizzIndex;
                 
             },
-            addOptionToTemp(option){
-                this.tempOption ="";
-                
-               if( !this.tempQuestion.choices)this.tempQuestion.choices = []
-               this.tempQuestion.choices.push(option); 
-               this.$forceUpdate();
+            addOptionToTemp(){
+                if(this.tempOption.length != 0){
+                    if( !this.tempQuestion.choices)this.tempQuestion.choices = []
+                    this.tempQuestion.choices.push(this.tempOption); 
+                    this.$forceUpdate();
+                    this.tempOption = '';
+                    this.errorMessage = '';
+                    this.optionInputBorder = '#ccc';
+                }else{
+                    this.optionInputBorder = '#ff0000';
+                }
             },
            print:function (ref,quizid) {
                 
@@ -82,8 +92,8 @@ export default {
                 newWindow.document.write(`<h1>${quizid}</h1>`);
                 newWindow.document.write('</body></html>');
               
-                newWindow.print();
-                newWindow.close();
+                // newWindow.print();
+                // newWindow.close();
             },
             //good
             refreshList: function(){
@@ -128,19 +138,28 @@ export default {
             },
             //good
             pushTempTo(quizzIndex) {
-                var db = firebase.firestore();        
-                var ind = (this.quizzes[quizzIndex].questions.length)?  this.quizzes[quizzIndex].questions.length:0;
-                var id = this.quizzes[quizzIndex].id
-                db.collection("Quizzes/"+id+"/Questions").doc("question"+ind).set(this.tempQuestion)
-                .then((docRef) => {
-                    this.refreshList();
-                    console.log("Document written with ID: ", docRef.id);
-                })
-                .catch(function(error) {
-                    console.error("Error adding document: ", error);
-                });
-                this.tempQuestion = {}
-                this.$forceUpdate();
+                if(Object.keys(this.tempQuestion).includes('question') && this.tempQuestion.question.length != 0 && Object.keys(this.tempQuestion).includes('goodAnswer')){
+                    var db = firebase.firestore();        
+                    var ind = (this.quizzes[quizzIndex].questions.length)?  this.quizzes[quizzIndex].questions.length:0;
+                    var id = this.quizzes[quizzIndex].id
+                    db.collection("Quizzes/"+id+"/Questions").doc("question"+ind).set(this.tempQuestion)
+                    .then((docRef) => {
+                        this.refreshList();
+                    })
+                    .catch(function(error) {
+                        console.error("Error adding document: ", error);
+                    });
+                    this.tempQuestion = {}
+                    this.$forceUpdate();
+                    this.questionTitleInput = '#ccc';
+                    this.errorMessage = '';
+                }
+                else{                    
+                    if(!Object.keys(this.tempQuestion).includes('question') || this.tempQuestion.question.length == 0)
+                        this.questionTitleInput = '#ff0000';
+                    else if(!Object.keys(this.tempQuestion).includes('goodAnswer'))
+                        this.errorMessage = 'vous devez cocher la bonne réponse';
+                }
             },
             makeCode(ref,text){
                
@@ -172,7 +191,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.canvas{
+.canvas div{
     padding: 0px 50%;
     margin-left: -75px;
     /* transform: translateX(-10vh); */
@@ -272,6 +291,21 @@ h1{
 .form-style-6 button:hover
 {
 	background: #2EBC99;
+}
+
+.listAnswers{
+    text-align: center;
+    list-style: none;
+    padding-inline-start: 0px;
+    margin-top: 0px
+}
+
+.questionStyle{
+    margin-bottom: 2px;
+}
+
+.errorMessage {
+    color: #ff0000;
 }
 
 </style>

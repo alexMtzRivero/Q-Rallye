@@ -1,7 +1,7 @@
 <template>
     <div class="form-style-6">
         <h1>Ajouter un quiz :</h1>
-        <input v-model="tempQuiz" type="text" id="nomQuiz"/>
+        <input v-model="tempQuiz" v-bind:style="{'border-color': inputBorder}" type="text" id="nomQuiz"/>
         <br/><br/>
         <button v-on:click="addQuiz">Ajouter</button>
         
@@ -26,15 +26,21 @@ export default {
                 },
                 tempQuiz:'',
                 quizzes:[],
+                inputBorder:''
             }
         },
         methods: {
             addQuiz: function(){
-                this.quiz.nomQuiz = this.tempQuiz
-                this.pushToDatabase();
-                this.resetQuiz();
-                this.resetField();
-                this.retrieveQuizzes();
+                if(this.tempQuiz.length != 0){
+                    this.quiz.nomQuiz = this.tempQuiz
+                    this.pushToDatabase();
+                    this.resetQuiz();
+                    this.resetField();
+                    this.retrieveQuizzes();
+                    this.inputBorder = '#ccc';
+                }else{
+                    this.inputBorder = '#ff0000';
+                }
             },
             resetQuiz: function(){
                 this.quiz = {
@@ -55,6 +61,7 @@ export default {
                 db.collection('Quizzes').doc("Quiz" + (n+1)).set(tempQuiz)
                     .then((docRef)=> {
                     console.log("Document written with ID: ", docRef);
+                    this.$parent.$refs.questions.refreshList()
                     })
                     .catch((error) => {
                         console.error("Error adding document: ", error);

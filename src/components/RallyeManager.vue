@@ -1,7 +1,10 @@
 <template>
   <div class="form-style-6">
-    <button @click="logPlayers()"> Refresh</button>
-    <h1>{{teams.length}} palyers</h1>
+    <button class="refresh_button" @click="logPlayers()"> Refresh</button>
+    <br>
+    <br>
+    <br>
+     <div id="mapid" class="mapid"> </div>
     <div v-for="(team,indexT) in teams" v-bind:key="team.name">
       <div>
            <h1 @click="changeDisplay(indexT)">{{team.name}}</h1>
@@ -22,8 +25,6 @@
         </div>
       </div>
     </div>
-    
-    <div id="mapid" class="mapid"> </div>
   </div>
 </template>
 
@@ -265,7 +266,7 @@ td{
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	width: 40%;
+	width: 20%;
 	background: #43D1AF;
 	border: 2px solid #30C29E;
 	color: #fff;
@@ -276,6 +277,10 @@ td{
 .form-style-6 button[type="button"]:hover,
 .form-style-6 button{
 	background: #2EBC99;
+}
+
+.refresh_button {
+  float: right;
 }
 
 </style>
