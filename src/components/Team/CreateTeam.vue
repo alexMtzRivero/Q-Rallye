@@ -1,14 +1,26 @@
 <template>
+<div>
   <div class="form-style-6">
     <h1>Ajouter une équipe :</h1>
     <label for="teamName">Nom d'équipe :</label><br>
     <input id="teamName" type="text" v-model="tempName" />
     <br>
-    <ColorPicker :width="150" :height="150" :disabled="false" startColor=tempColor @colorChange="onColorChange" v-model="tempColor"></ColorPicker>
+    
+  </div>
+  <div class="background-colorPicker" >
     <label for="color">Couleur :</label><br>
-    <input id="color" type="text" v-model="tempColor" />
-    <br>
+    <input id="color" class="colorPicker" type="text" v-model="tempColor" />
+    <span @click="showPicker()" class="input-group-addon color-picker-container">
+        <span class="current-color" :style="`background-color: ${tempColor}`" ></span> 
+    </span>
+    <div class="posColorPicker">
+        <ColorPicker v-if="show" :width="200" :height="200" :disabled="false" startColor=tempColor @colorChange="onColorChange" v-model="tempColor"></ColorPicker>
+    </div>
+  </div>
+
+<div class="form-style-6">
     <button type="button" @click="addTeam()">Ajouter l'équipe</button>
+</div>
   </div>
 </template>
 
@@ -36,9 +48,13 @@ export default {
         name:"",
         tempName:"",
         tempColor:"#ff0000",
+        show:false,
     }
   },
   methods:{
+        showPicker: function(){
+            this.show= !this.show;
+        },
         addTeam: function() {
             this.name = this.tempName;
             this.team.color = this.tempColor;
@@ -165,6 +181,48 @@ export default {
 .form-style-6 button[type="submit"]:hover,
 .form-style-6 button[type="button"]:hover{
 	background: #2EBC99;
+}
+.background-colorPicker{
+    max-width: 60%;
+	margin: -10px auto;
+	padding: 16px;
+    background: #F7F7F7;
+    font: 95% Arial, Helvetica, sans-serif;
+}
+.colorPicker{
+    transition: 0.5s;
+    width: 65%;
+    padding: 5px;
+}
+.colorPicker input[type="text"]:focus {
+    box-shadow: 0 0 5px #43D1AF;
+	border: 1px solid #43D1AF;
+}
+.button-colorPicker{
+    width: 15%;
+}
+
+.current-color {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    background-color: #000;
+    cursor: pointer;
+}
+
+.input-group-addon {
+    padding: 6px;
+    color: #555;
+    text-align: center;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    
+}
+
+.posColorPicker{
+    margin-top: 5%;
+    padding-left: 50%;
+    margin-left: -100px;
 }
 
 </style>
