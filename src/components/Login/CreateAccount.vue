@@ -8,11 +8,11 @@
       </div>
       <div class="section"> 
         <label>Mot de passe :</label><br>
-        <input type="text" v-model="pass1"><br><label >{{comentsPass1}}</label>
+        <input type="password" v-model="pass1"><br><label >{{comentsPass1}}</label>
       </div>
       <div class="section">
         <label>Confirmation mot de passe :</label><br>
-        <input type="text" v-model="pass2"><br><label >{{comentsPass2}}</label>
+        <input type="password" v-model="pass2"><br><label >{{comentsPass2}}</label>
       </div>
       
       <button @click="createUser()"> Créer compte</button><br><br>
@@ -143,7 +143,7 @@ h1{
 .form-style-6 input[type="number"],
 .form-style-6 input[type="search"],
 .form-style-6 input[type="time"],
-.form-style-6 input[type="url"],
+.form-style-6 input[type="password"],
 .form-style-6 textarea,
 .form-style-6 select 
 {
@@ -170,7 +170,7 @@ h1{
 .form-style-6 input[type="number"]:focus,
 .form-style-6 input[type="search"]:focus,
 .form-style-6 input[type="time"]:focus,
-.form-style-6 input[type="url"]:focus,
+.form-style-6 input[type="password"]:focus,
 .form-style-6 textarea:focus,
 .form-style-6 select:focus
 {

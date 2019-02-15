@@ -142,6 +142,7 @@ ul{
 .icon{
   width: 32px;
   height: 32px;
+  padding-top: 2px;
 }
 label{
   text-align: center;

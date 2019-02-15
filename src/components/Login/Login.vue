@@ -8,7 +8,7 @@
     </div>
     <div class="section">  
       <label>Mot de passe :</label><br>
-     <input type="text" v-model="pass"><br><label class="erreur">{{generalComents}}</label>
+     <input type="password" v-model="pass"><br><label class="erreur">{{generalComents}}</label>
     </div>
     <button @click="login()"> Se connecter </button>
     <br>
@@ -113,7 +113,7 @@ h1{
 .form-style-6 input[type="number"],
 .form-style-6 input[type="search"],
 .form-style-6 input[type="time"],
-.form-style-6 input[type="url"],
+.form-style-6 input[type="password"],
 .form-style-6 textarea,
 .form-style-6 select 
 {
@@ -140,7 +140,7 @@ h1{
 .form-style-6 input[type="number"]:focus,
 .form-style-6 input[type="search"]:focus,
 .form-style-6 input[type="time"]:focus,
-.form-style-6 input[type="url"]:focus,
+.form-style-6 input[type="password"]:focus,
 .form-style-6 textarea:focus,
 .form-style-6 select:focus
 {

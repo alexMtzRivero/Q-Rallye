@@ -3,16 +3,16 @@
         <div class="form-style-6" v-for="(quiz,index) in quizzes"  v-bind:key="`${quiz.id}+${index}`">
             <h1>{{quiz.id}}</h1>
             <div :class="`${(showedQR == index)?'shown':'hidden'} canvas` ">
-                <div  id="qrholder" ref ="quizhoder"></div>
-                 <button @click="print(index,quiz.id)"> print </button>
+                <div  id="qrholder" ref ="quizhoder"></div><br>
+                <button @click="print(index,quiz.id)"> Imprimer </button>
             </div>
             <br>
-            <button @click="makeCode(index,quiz.id)"> show QR</button><br>
+            <button @click="makeCode(index,quiz.id)"> Voir le QR code</button><br>
             <div v-for="question in quiz.questions" :key ="`${question.question}+${quiz.id}`">
-                <h3>{{question.question}}</h3>
-                <ol >
+                <h3 class="questionStyle">{{question.question}}</h3>
+                <ul  class="listAnswers">
                     <li v-for="(pAnswer,indexA) in question.choices" :key ="`${pAnswer}+${indexA}`">{{pAnswer}} </li>
-                </ol>
+                </ul>
             </div>
             <button type="button" v-if="index != idDivEdited" @click="selectToAddQuestion(index)">Ajouter une question</button>
 
@@ -172,7 +172,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.canvas{
+.canvas div{
     padding: 0px 50%;
     margin-left: -75px;
     /* transform: translateX(-10vh); */
@@ -272,6 +272,17 @@ h1{
 .form-style-6 button:hover
 {
 	background: #2EBC99;
+}
+
+.listAnswers{
+    text-align: center;
+    list-style: none;
+    padding-inline-start: 0px;
+    margin-top: 0px
+}
+
+.questionStyle{
+    margin-bottom: 2px;
 }
 
 </style>
