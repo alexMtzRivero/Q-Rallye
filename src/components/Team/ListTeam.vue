@@ -7,7 +7,7 @@
         <img src="../../assets/bin.png" @click="deleteTeam(index, team.id)"/>
         <p><b class="champ">Couleur : </b>{{team.color}} <br>
         <b class="champ">Mot de passe : </b>{{team.password}}</p>
-        <Colorpicker/>
+
       
 
         <div v-for="runner in runners[index]" v-bind:key="runner.id" class="Runner">

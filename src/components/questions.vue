@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="form-style-6" v-for="(quiz,index) in quizzes"  v-bind:key="quiz.id">
+        <div class="form-style-6" v-for="(quiz,index) in quizzes"  v-bind:key="`${quiz.id}+${index}`">
             <h1>{{quiz.id}}</h1>
             <div :class="`${(showedQR == index)?'shown':'hidden'} canvas` ">
                 <div  id="qrholder" ref ="quizhoder"></div>
@@ -8,10 +8,10 @@
             </div>
             <br>
             <button @click="makeCode(index,quiz.id)"> show QR</button><br>
-            <div v-for="question in quiz.questions" :key ="question.question+quiz.id">
+            <div v-for="question in quiz.questions" :key ="`${question.question}+${quiz.id}`">
                 <h3>{{question.question}}</h3>
                 <ol >
-                    <li v-for="pAnswer in question.choices" :key ="pAnswer">{{pAnswer}} </li>
+                    <li v-for="(pAnswer,indexA) in question.choices" :key ="`${pAnswer}+${indexA}`">{{pAnswer}} </li>
                 </ol>
             </div>
             <button type="button" v-if="index != idDivEdited" @click="selectToAddQuestion(index)">Ajouter une question</button>
@@ -89,7 +89,7 @@ export default {
             refreshList: function(){
                 var db = firebase.firestore();
                 this.quizzes = [];
-                this.$forceUpdate();
+              
                 db.collection('Quizzes').get().then((querySnapshot) => {
                     querySnapshot.docs.forEach(element => {
                         var toPush = element.data();
@@ -116,6 +116,7 @@ export default {
                 var db = firebase.firestore();
                 db.collection('Quizzes/'+quiz.id+'/Questions').get().then((querySnapshot) => {
                     quiz.questions = []
+                      this.$forceUpdate();
                     querySnapshot.docs.forEach(element => {
                         var toPush = element.data();
                         toPush.id = element.id;
