@@ -59,7 +59,6 @@ export default {
     
     test(){
       console.log(this.teams);
-      
     },
     refreshList: function(){
       var db = firebase.firestore();
@@ -264,12 +263,16 @@ h1{
 	background: #2EBC99;
 }
 
+.erreur{
+  color:red;
+}
 .bin {
   width: 20px;
   height: 20px;
   float: right;
   position: flex;
 }
+
 
 
 </style>
