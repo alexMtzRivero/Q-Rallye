@@ -16,12 +16,14 @@
         <div v-if="index == idDivEdited" >
           <input type="checkbox" id="multi" checked v-model="tempCb">Ajout multiple<br><br>
           <label for="lastName"><b class="champ">Nom : </b></label><br>
-          <input id="lastName" type="text" v-model="tempLastName" />
-
+          <input id="lastName" type="text" v-model="tempLastName" /><br>
+          <label class="erreur" v-if="errorLastName">Nom invalide</label>
           <br>
           <label for="firstName"><b class="champ">Prénom : </b></label><br>
-          <input id="firstName" type="text" v-model="tempFirstName" />
+          <input id="firstName" type="text" v-model="tempFirstName" /><br>
+          <label class="erreur" v-if="errorFirstName">Prénom invalide</label>
           <br>
+
           <button type="button" @click="addRunner(team)">Ajouter</button>
           <button type="button" v-if="tempCb" @click="showRunner(-1)">Terminer</button>
         </div>
@@ -53,12 +55,42 @@ export default {
         tempLastName:"",
         tempCb:true,
         show:false,
+        errorLastName: false,
+        errorFirstName: false,
     }
   },
   methods:{
     
     test(){
       console.log(this.teams);
+    },
+    checkName: function(){
+      this.errorLastName= false
+      this.errorFirstName= false
+      if(this.tempLastName == "")
+      {
+        this.errorLastName = true;
+        return false;
+      }
+      else if(this.tempFirstName == "")
+      {
+        this.errorFirstName = true;
+        return false;
+      }
+      else{
+        var patt = /[0-9]/g;
+        var resultFName = this.tempFirstName.match(patt);
+        var resultLName = this.tempLastName.match(patt);
+        if (!(resultLName == null)) {
+          this.errorLastName = true;
+          return false;
+        }
+        else if (!(resultFName == null)) {
+          this.errorFirstName = true;
+          return false;
+        }
+        return true;
+      }  
     },
     refreshList: function(){
       var db = firebase.firestore();
@@ -94,15 +126,19 @@ export default {
     },
     
     addRunner: function(team){
-      var cb = document.getElementById('multi');
-      if(!cb.checked){
-        this.idDivEdited = -1;
-         this.show = !this.show;
+      this.checkName();
+      if(this.checkName())
+      {
+        var cb = document.getElementById('multi');
+        if(!cb.checked){
+          this.idDivEdited = -1;
+          this.show = !this.show;
+        }
+        this.runner.firstName = this.tempFirstName;
+        this.runner.lastName = this.tempLastName;
+        this.pushRunner(team);
+        this.resetField();
       }
-      this.runner.firstName = this.tempFirstName;
-      this.runner.lastName = this.tempLastName;
-      this.pushRunner(team);
-      this.resetField();
     },
     delRunner: function (runner,team){
       var db = firebase.firestore();
