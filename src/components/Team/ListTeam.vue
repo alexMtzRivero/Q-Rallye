@@ -59,7 +59,6 @@ export default {
     
     test(){
       console.log(this.teams);
-      
     },
     refreshList: function(){
       var db = firebase.firestore();
@@ -252,6 +251,10 @@ h1{
 .form-style-6 button[type="submit"]:hover,
 .form-style-6 button[type="button"]:hover{
 	background: #2EBC99;
+}
+
+.erreur{
+  color:red;
 }
 
 
