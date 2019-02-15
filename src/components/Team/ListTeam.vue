@@ -3,20 +3,16 @@
 
     <h1>Liste des équipes :</h1>
     <div v-for="(team,index) in teams" v-bind:key="team.id" class="form-style-6">
+        <img class="bin" src="../../assets/bin.png" @click="deleteTeam(index, team.id)"/>
         <h2>{{team.id}}</h2>
-        <img src="../../assets/bin.png" @click="deleteTeam(index, team.id)"/>
         <p><b class="champ">Couleur : </b>{{team.color}} <br>
         <b class="champ">Mot de passe : </b>{{team.password}}</p>
-      
-
         <div v-for="runner in runners[index]" v-bind:key="runner.id" class="Runner">
           <p><b class="champ">Nom : </b>{{runner.lastName}} <br>
           <b class="champ">Prénom : </b>{{runner.firstName}}</p>
           <button type="button" @click="delRunner(runner,team.id)">Supprimer le membre</button>
         </div>
         <button type="button" v-if="index != idDivEdited" @click="showRunner(index)" >Ajouter un membre</button>
-
-
         <div v-if="index == idDivEdited" >
           <input type="checkbox" id="multi" checked v-model="tempCb">Ajout multiple<br><br>
           <label for="lastName"><b class="champ">Nom : </b></label><br>
@@ -268,6 +264,12 @@ h1{
 	background: #2EBC99;
 }
 
+.bin {
+  width: 20px;
+  height: 20px;
+  float: right;
+  position: flex;
+}
 
 
 </style>
