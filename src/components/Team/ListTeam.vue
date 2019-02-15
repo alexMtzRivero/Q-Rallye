@@ -112,12 +112,22 @@ export default {
         
         this.refreshList();
       });
-    },deleteTeam: function (index,ref){
+    },deleteTeam: function (index,ref){      
       var db = firebase.firestore();
-      db.collection('Groups').doc(ref).delete().then(refresh =>{
-        console.log("deleted");
-      });
+      var deleteFn = firebase.functions().httpsCallable('recursiveDelete');
+      deleteFn({ path: 'Groups/'+ref }).then(function(result) {
+          console.log('success');
+          
+          logMessage('Delete success: ' + JSON.stringify(result));
+        }).catch(function(err) {
+          console.log('error');
+          console.log(err);
+          
+          logMessage('Delete failed, see console,');
+          console.warn(err);
+        });
       this.teams.splice(index, 1);
+      this.runners.splice(index, 1);
     },
     resetField: function(){
         this.tempFirstName = "";
