@@ -82,8 +82,8 @@ export default {
                 newWindow.document.write(`<h1>${quizid}</h1>`);
                 newWindow.document.write('</body></html>');
               
-                newWindow.print();
-                newWindow.close();
+                // newWindow.print();
+                // newWindow.close();
             },
             //good
             refreshList: function(){

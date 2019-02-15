@@ -55,6 +55,7 @@ export default {
                 db.collection('Quizzes').doc("Quiz" + (n+1)).set(tempQuiz)
                     .then((docRef)=> {
                     console.log("Document written with ID: ", docRef);
+                    this.$parent.$refs.questions.refreshList()
                     })
                     .catch((error) => {
                         console.error("Error adding document: ", error);
