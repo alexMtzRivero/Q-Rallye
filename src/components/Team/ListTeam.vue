@@ -111,18 +111,19 @@ export default {
         
         this.refreshList();
       });
-    },deleteTeam: function (index,ref){      
+    },deleteTeam: function (index,ref){   
+      console.log("try to delet");
+         
       var db = firebase.firestore();
       var deleteFn = firebase.functions().httpsCallable('recursiveDelete');
+
       deleteFn({ path: 'Groups/'+ref }).then(function(result) {
           console.log('success');
-          
-          logMessage('Delete success: ' + JSON.stringify(result));
+          console.log('Delete success: ' + JSON.stringify(result));
         }).catch(function(err) {
           console.log('error');
-          console.log(err);
           
-          logMessage('Delete failed, see console,');
+          console.log('Delete failed, see console,');
           console.warn(err);
         });
       this.teams.splice(index, 1);

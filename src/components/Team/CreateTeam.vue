@@ -40,10 +40,7 @@ export default {
         team:{ 
             color:"",
             password:"",  
-            position:{
-                lat:"0",
-                lon:"0"
-            } 
+            position:new firebase.firestore.GeoPoint(0, 0)
         },
         name:"",
         tempName:"",
