@@ -1,5 +1,19 @@
 <template>
     <div>
+         <h1>Begin code</h1>
+            <div class="shown canvas">
+                <div  id="qrholder" ref ="beginCode"></div><br>
+                <button @click="printBeginEnd(index,'Begin')"> Imprimer </button>
+            </div>
+            <br>
+           
+             <h1>End Code</h1>
+            <div class="shown canvas">
+                <div  id="qrholder" ref ="endCode"></div><br>
+                <button @click="printBeginEnd(index,'End')"> Imprimer </button>
+            </div>
+            <br>
+           
         <div class="form-style-6" v-for="(quiz,index) in quizzes"  v-bind:key="`${quiz.id}+${index}`">
             <h1>{{quiz.id}}</h1>
             <div :class="`${(showedQR == index)?'shown':'hidden'} canvas` ">
@@ -92,8 +106,20 @@ export default {
                 newWindow.document.write(`<h1>${quizid}</h1>`);
                 newWindow.document.write('</body></html>');
               
-                // newWindow.print();
-                // newWindow.close();
+                newWindow.print();
+                newWindow.close();
+            },
+            printBeginEnd(ref,text){
+                var newWindow = window.open();
+                newWindow.document.write('<html><head><title>Print it!</title><style>img{border:60px white double; background:black; margin: 50% 50% 0 50%;width: 400px;display: block;transform: translateX(-50%)translateY(-50%);}h1{text-align: center;font-size: 70px;}</style></head><body>');
+                newWindow.document.write(this.$refs.ref.innerHTML);
+
+                newWindow.document.write(`<h1>${text}</h1>`);
+                newWindow.document.write('</body></html>');
+              
+                newWindow.print();
+                newWindow.close();
+
             },
             //good
             refreshList: function(){
@@ -161,6 +187,18 @@ export default {
                         this.errorMessage = 'vous devez cocher la bonne réponse';
                 }
             },
+            makeBeginEngCodes(){
+                    var qrcode = new QRCode(this.$refs.beginCode, {
+                            width : 150,
+                            height : 150 
+                        });
+                    qrcode.makeCode("startRace"); 
+                    var qrcode = new QRCode(this.$refs.endCode, {
+                            width : 150,
+                            height : 150 
+                        });
+                    qrcode.makeCode("endRace"); 
+            },
             makeCode(ref,text){
                
                 if(this.qrCodes[ref]== null){
@@ -182,7 +220,7 @@ export default {
         },
         mounted(){
             this.refreshList();   
-            
+            this.makeBeginEngCodes();
             
                     
         },
