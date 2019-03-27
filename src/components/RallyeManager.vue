@@ -7,7 +7,7 @@
      <div id="mapid" class="mapid"> </div>
     <div v-for="(team,indexT) in teams" v-bind:key="team.name">
       <div>
-           <h1 @click="changeDisplay(indexT)">{{team.name}}{{team.points}}</h1>
+           <h1 @click="changeDisplay(indexT)">{{team.name}}  {{team.timeText}}</h1>
       </div>
      
       <div v-if="team.displayed" >
@@ -48,7 +48,12 @@ export default {
     }
   },
   methods: {
-
+ timeOfTeam: function (team) {
+      var date = new Date(null);
+      date.setSeconds(team.points); 
+var result = date.toISOString().substr(11, 8);
+      return  result//`${date.getDay()}:${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}` ;
+    },
     changeDisplay:function (index) {
       this.zoomInTeam();
       this.teams[index].displayed = !this.teams[index].displayed;
@@ -60,9 +65,10 @@ export default {
     updatePoints: function(){
       for (let i = 0; i < this.teams.length; i++) {
         this.teams[i].points = this.getPointsOf(this.teams[i]);
+        this.teams[i].timeText = this.timeOfTeam(this.teams[i])
       }
       this.teams.sort((a,b)=>{return a.points-b.points});
-
+       
     },
     getPointsOf:function(team){
       var points = 0;
