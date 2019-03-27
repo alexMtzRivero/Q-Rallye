@@ -7,7 +7,7 @@
      <div id="mapid" class="mapid"> </div>
     <div v-for="(team,indexT) in teams" v-bind:key="team.name">
       <div>
-           <h1 @click="changeDisplay(indexT)">{{team.name}}</h1>
+           <h1 @click="changeDisplay(indexT)">{{team.name}}{{team.points}}</h1>
       </div>
      
       <div v-if="team.displayed" >
@@ -54,8 +54,38 @@ export default {
       this.teams[index].displayed = !this.teams[index].displayed;
     },
     logPlayers: function () {
+      this.updatePoints();
       this.$forceUpdate();
+    },
+    updatePoints: function(){
+      for (let i = 0; i < this.teams.length; i++) {
+        this.teams[i].points = this.getPointsOf(this.teams[i]);
+      }
+      this.teams.sort((a,b)=>{return a.points-b.points});
 
+    },
+    getPointsOf:function(team){
+      var points = 0;
+      const penaltyForBad = 30;
+      if( team.answers!= null){
+        // for all the quizz
+        for (let i = 0; i < team.answers.length; i++) {
+          const quiz = team.answers[i];
+          // we check the bad choices
+            for (let i = 0; i < quiz.choices.length; i++) {
+              // if its bad answer we add to the counter
+              if(quiz.choices[i]!= this.quizzes[quiz.id].questions[i].goodAnswer)
+                  points+= penaltyForBad;
+             // console.log(quiz.choices[i],this.quizzes[quiz.id].questions[i].goodAnswer,quiz.choices[i]!= this.quizzes[quiz.id].questions[i].goodAnswer);
+                  
+            }
+            // we add the time they took to complet the quiz
+            points += quiz.endQuiz.seconds - quiz.startQuiz.seconds;
+            // TODO transform to time
+        }
+      }
+
+      return points;
     },
     updatePaths: function(){
         for (let i = 0; i < this.teams.length; i++) {
@@ -90,6 +120,8 @@ export default {
             toPush.id = element.id;
             team.answers.push(toPush)
           });
+          console.log(team);
+          
         })
       }
 
@@ -110,18 +142,41 @@ export default {
         this.getAnswersOf(this.teams);
       })
     },
+    getGoodAnswers:function (list) {
+      var db = firebase.firestore();
+
+      var quizList = Object.keys(list);
+      for (let i = 0; i < quizList.length; i++) {
+        const quiz = quizList[i];
+
+        db.collection(`Quizzes/${quiz}/Questions`).get().then((querySnapshot) => {
+          if(!this.quizzes[quiz].questions){
+            this.quizzes[quiz].questions = []
+          }
+          querySnapshot.docs.forEach(element => {
+            var toPush = element.data();
+            toPush.id = element.id;
+            this.quizzes[quiz].questions.push(toPush);
+          });
+          console.log("respuestas",this.quizzes[quiz]);
+          
+          
+        })
+      }
+
+    },
     getQuestions: function () {
       var db = firebase.firestore();
 
       db.collection('Quizzes').get().then((querySnapshot) => {
-
         querySnapshot.docs.forEach(element => {
           this.quizzes[element.id] = element.data()
-
         });
+        
+        this.getGoodAnswers(this.quizzes);
 
+        this.getPlayers();
       })
-
     },
     zoomInTeam: function () {
       this.mymap.fitBounds([[45.188096, 5.718452],[45.199096, 5.818452]]);
@@ -160,8 +215,9 @@ export default {
     this.mapInit()
 
     // gets the data of the teams
-    this.getPlayers();
     this.getQuestions();
+    
+    
 
   }
 }
