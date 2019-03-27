@@ -25,9 +25,9 @@
               <img src="https://cdn2.iconfinder.com/data/icons/font-awesome/1792/map-256.png" alt="" class="icon">
               <label v-if="shown">Rallye</label>
             </li>
-          </router-link>
+          </router-link >
           <li @click="logOut()" v-if="fb.auth().currentUser">
-            <img src="https://cdn4.iconfinder.com/data/icons/miu/24/common-logout-signout-exit-glyph-256.png" class="icon"/>
+            <img src="https://cdn4.iconfinder.com/data/icons/miu/24/common-logout-signout-exit-glyph-256.png" alt="" class="icon">
             <label v-if="shown">Déconnexion</label>
           </li>
         </ul>
@@ -83,7 +83,7 @@ export default {
 .holder-hide button{
 	background: #000000;
 	border: 2px solid #30C29E;
-	color: #2EBC99;
+	color: rgba(16,174,161,1) 33%;
   width: 200px;
   transition: 0.5s;
   
@@ -100,7 +100,7 @@ export default {
 	width: 60px;
 	background: #000000;
 	border: 2px solid #30C29E;
-	color: #2EBC99;
+	color: rgba(16,174,161,1) 33%;
   transition: 0.5s;
 
 }
@@ -114,16 +114,19 @@ export default {
   position: relative;
   transition: 0.5s;
   width: 200px;
-  background-color: #2db998;
+  background: linear-gradient(180deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);
   height: 100%;
+  min-height: 700px;
+  
 }
 .holder-show div{
   position: fixed;
   transition: 0.5s;
   width: 60px;
-  background-color: #2db998;
+  background: linear-gradient(180deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);
   height: 100%;
 }
+
 li{
   display: flex;
   color: #000000;
@@ -131,9 +134,8 @@ li{
   margin-top: 0px;
   margin-block-end: 0px;
   padding-top: 16px;
-    
 }
-ul{
+ul{ 
   width: 100%;
   padding:0px;
   margin-top: 0px;
@@ -144,12 +146,18 @@ ul{
   height: 32px;
   padding-top: 2px;
 }
+.icon:hover
+{
+  cursor: pointer;
+}
 label{
   text-align: center;
   margin: 3px;
   display: inline-block;
   vertical-align: middle;
   line-height: normal;
+  opacity: 1;
+  transition: 0.5s;
 }
 
 a:hover, a:visited, a:link, a:active
@@ -159,6 +167,18 @@ a:hover, a:visited, a:link, a:active
 
 #left_arrow {
   position: right;
+}
+
+@media screen and (min-width: 200px) and (max-width: 640px) {
+
+.holder-hide div{
+  position: fixed;
+  transition: 0.5s;
+  width: 200px;
+  background: linear-gradient(180deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);
+  height: 100%;
+  
+}
 }
 
 </style>

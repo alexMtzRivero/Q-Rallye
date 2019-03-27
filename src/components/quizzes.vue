@@ -1,16 +1,15 @@
 <template>
     <div class="form-style-6">
         <h1>Ajouter un quiz :</h1>
+        <label for="teamName">Nom du quiz :</label><br>
         <input v-model="tempQuiz" v-bind:style="{'border-color': inputBorder}" type="text" id="nomQuiz"/>
+        <br/>
+        <br/>
+        <label for="teamName">Position du quiz :</label><br>
+        <br/>
+            <div id="mapid" class="mapid"> </div>
         <br/><br/>
         <button v-on:click="addQuiz">Ajouter</button>
-        
-        <!--<h2>Liste des quiz :</h2>
-        <ul>
-            <li v-for="quiz in quizzes" v-bind:key="quiz.id">{{quiz.data().nomQuiz}}</li>
-        </ul>-->
-            
-
     </div>
 </template>
 
@@ -19,6 +18,13 @@ import firebase from "firebase";
 
 export default {
         name: 'CreateQuiz',
+        components: {
+
+        },
+        props: {
+
+
+        },
         data () {
             return {
                 quiz: {
@@ -26,10 +32,14 @@ export default {
                 },
                 tempQuiz:'',
                 quizzes:[],
-                inputBorder:''
+                inputBorder:'',
+                mymap:""
             }
         },
         methods: {
+            changeDisplay:function () {
+                this.zoomInTeam();
+            },
             addQuiz: function(){
                 if(this.tempQuiz.length != 0){
                     this.quiz.nomQuiz = this.tempQuiz
@@ -74,31 +84,74 @@ export default {
                     this.quizzes=querySnapshot.docs
                 })
 
+            },zoomInTeam: function () {
+                this.mymap.fitBounds([[45.188096, 5.718452],[45.199096, 5.818452]]);
             },
-            
-        },
-        mounted(){
-            this.retrieveQuizzes();
-             let db = firebase.firestore();
-               
-                var nom_quiz = this.quiz.nomQuiz;
-                db.collection('Quizzes').get().then(snap => {
-                    this.quizzes = snap.docs
-                    
-                }).catch(
-                    error => {
-                        console.log("erreur");
-                        
-                    }
+            mapInit: function () {
+                      console.log("xxx")
 
-                );
-        }
+            this.mymap = L.map('mapid', {
+                center: [45.188096, 5.718452],
+                zoom: 13
+            });
+            console.log("mapp",this.mymap);
+            
+            // conects the map with the open street maps data
+            this.tileLayer = L.tileLayer(
+                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 17,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                }
+            );
+            console.log("layer",this.titleLayer);
+            this.tileLayer.addTo(this.mymap);
+
+            
+
+            var circle = L.circle([45.188096, 5.718452], {
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.5,
+                radius: 50
+            }).addTo(this.mymap);
+            this.mymap.on('click', onMapClick);
+            function onMapClick(e) {
+                var marker = L.marker(e.latlng);
+                this.mymap.addLayer(marker);
+            }
+            }
+            
+            },
+            mounted(){
+                this.mapInit();
+                this.retrieveQuizzes();
+                let db = firebase.firestore();
+                
+                    var nom_quiz = this.quiz.nomQuiz;
+                    db.collection('Quizzes').get().then(snap => {
+                        this.quizzes = snap.docs
+                        
+                    }).catch(
+                        error => {
+                            console.log("erreur");
+                            
+                        }
+
+                    );
+                
+            }
+        
     }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#mapid { 
+  display: -webkit-inline-box;
+  height: 50vw;
+  width: 90%;
 
+}
 h1{
 	background: #43D1AF;
 	padding: 20px 0;
@@ -117,7 +170,7 @@ h1{
 	background: #F7F7F7;
 }
 .form-style-6 h1{
-	background: #43D1AF;
+	background: linear-gradient(90deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);	font-size: 140%;
 	font-size: 140%;
 	font-weight: 300;
 	text-align: center;
@@ -167,24 +220,21 @@ h1{
 
 .form-style-6 button[type="submit"],
 .form-style-6 button[type="button"],
-.form-style-6 button
-{
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	width: 40%;
+.form-style-6 button {
+	width: 35%;
 	padding: 5px;
-	background: #43D1AF;
-	border: 2px solid #30C29E;
+	background: rgba(16,174,161,1) 33%;
 	color: #fff;
-    padding: 10px;
-    margin-bottom: 10px;
+  padding: 10px;
+  border:none;
+  border-radius: 3px;
+  margin: 1px;
 }
 .form-style-6 button[type="submit"]:hover,
 .form-style-6 button[type="button"]:hover,
-.form-style-6 button:hover
-{
-	background: #2EBC99;
+.form-style-6 button:hover{
+  background: #0E988D;
+  cursor: pointer;
 }
 
 </style>

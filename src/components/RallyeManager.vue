@@ -1,5 +1,6 @@
 <template>
   <div class="form-style-6">
+    <img class="logo" src="../assets/logo_appli.png" />
     <button class="refresh_button" @click="logPlayers()"> Refresh</button>
     <br>
     <br>
@@ -231,6 +232,10 @@ var result = date.toISOString().substr(11, 8);
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.logo {
+  width: 5%;
+  float: left;
+}
 #mapid { 
   display: -webkit-inline-box;
   height: 50vw;
@@ -272,14 +277,17 @@ td{
 	background: #F7F7F7;
 }
 .form-style-6 h1{
-	background: #43D1AF;
-	padding: 20px 0;
+background: linear-gradient(90deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);	padding: 20px 0;
 	font-size: 140%;
 	font-weight: 300;
 	text-align: center;
 	color: #fff;
 	margin: 0px 0px 3px 0px;
 }
+.form-style-6 h1:hover{
+  cursor: pointer;
+}
+
 .form-style-6 input[type="text"],
 .form-style-6 input[type="date"],
 .form-style-6 input[type="datetime"],
@@ -324,23 +332,21 @@ td{
 
 .form-style-6 button[type="submit"],
 .form-style-6 button[type="button"],
-.form-style-6 button{
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
+.form-style-6 button {
 	width: 20%;
-	background: #43D1AF;
-	border: 2px solid #30C29E;
+	padding: 5px;
+	background: rgba(16,174,161,1) 33%;
 	color: #fff;
   padding: 10px;
-  margin: 0px 0px 3px 0px;
+  border:none;
+  border-radius: 3px;
 }
 .form-style-6 button[type="submit"]:hover,
 .form-style-6 button[type="button"]:hover,
-.form-style-6 button{
-	background: #2EBC99;
+.form-style-6 button:hover{
+  background: #0E988D;
+  cursor: pointer;
 }
-
 .refresh_button {
   float: right;
 }

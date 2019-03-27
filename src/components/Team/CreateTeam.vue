@@ -125,9 +125,10 @@ export default {
 	margin: 10px auto;
 	padding: 16px;
 	background: #F7F7F7;
+
 }
 .form-style-6 h1{
-	background: #43D1AF;
+	background: linear-gradient(90deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);	font-size: 140%;
 	padding: 20px 0;
 	font-size: 140%;
 	font-weight: 300;
@@ -135,6 +136,8 @@ export default {
 	color: #fff;
 	margin: -16px -16px 16px -16px;
 }
+
+
 .form-style-6 input[type="text"],
 .form-style-6 input[type="date"],
 .form-style-6 input[type="datetime"],
@@ -178,19 +181,21 @@ export default {
 }
 
 .form-style-6 button[type="submit"],
-.form-style-6 button[type="button"]{
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	width: 40%;
-	background: #43D1AF;
-	border: 2px solid #30C29E;
+.form-style-6 button[type="button"],
+.form-style-6 button {
+	width: 35%;
+	padding: 5px;
+	background: rgba(16,174,161,1) ;
 	color: #fff;
-    padding: 10px;
+  padding: 10px;
+  border:none;
+  border-radius: 3px;
 }
 .form-style-6 button[type="submit"]:hover,
-.form-style-6 button[type="button"]:hover{
-	background: #2EBC99;
+.form-style-6 button[type="button"]:hover,
+.form-style-6 button:hover{
+  background: #0E988D;
+  cursor: pointer;
 }
 .background-colorPicker{
     max-width: 60%;
@@ -213,6 +218,14 @@ export default {
     width: 15%;
 }
 
+.current-color {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: #000;
+    cursor: pointer;
+}
+
 .input-group-addon {
     padding-left: 15px;
     padding-right: 10px;
@@ -233,6 +246,41 @@ export default {
 
 .erreur{
   color:red;
+}
+
+@media screen and (min-width: 200px) and (max-width: 640px) {
+  h1{
+    background: linear-gradient(90deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);	font-size: 140%;
+    padding: 20px 0;
+    font-size: 140%;
+    font-weight: 300;
+    text-align: center;
+    color: #fff;
+    margin: -16px -16px 16px -16px;
+    max-width: 60vh;
+    margin: 10px auto;
+    padding: 16px;
+    margin-left: 65px;
+    margin-right: 5px;
+  }
+    .background-colorPicker{
+        max-width: 60vh;
+        margin: -10px auto;
+        padding: 16px;
+        background: #F7F7F7;
+        font: 95% Arial, Helvetica, sans-serif;
+        margin-left: 65px;
+        margin-right: 5px;
+    }
+  .form-style-6{
+	font: 95% Arial, Helvetica, sans-serif;
+	max-width: 60vh;
+	margin: 10px auto;
+	padding: 16px;
+	background: #F7F7F7;
+    margin-left: 65px;
+    margin-right: 5px;
+  }
 }
 
 </style>
