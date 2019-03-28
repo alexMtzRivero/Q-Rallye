@@ -121,15 +121,6 @@ export default {
             console.log("layer",this.titleLayer);
             this.tileLayer.addTo(this.mymap);
 
-            
-
-            var circle = L.circle([45.188096, 5.718452], {
-                color: 'red',
-                fillColor: '#f03',
-                fillOpacity: 0.5,
-                radius: 50
-            }).addTo(this.mymap);
-
             this.mymap.on('click', this.onMapClick);
             
             },
