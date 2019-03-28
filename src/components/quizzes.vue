@@ -7,7 +7,7 @@
         <br/>
         <label for="teamName">Position du quiz :</label><br>
         <br/>
-            <div id="mapid" class="mapid"> </div>
+            <div id="mapid" class="mapid" v-bind:style="{'border-color': mapBorder}"> </div>
         <br/><br/>
         <button v-on:click="addQuiz">Ajouter</button>
     </div>
@@ -28,12 +28,16 @@ export default {
         data () {
             return {
                 quiz: {
-                    nomQuiz: ''
+                    nomQuiz: '',
+                    geoPoint: ''
                 },
                 tempQuiz:'',
                 quizzes:[],
                 inputBorder:'',
-                mymap:""
+                mapBorder:'',
+                mymap:"",
+                myMarker: "",
+                location: ""
             }
         },
         methods: {
@@ -41,29 +45,40 @@ export default {
                 this.zoomInTeam();
             },
             addQuiz: function(){
-                if(this.tempQuiz.length != 0){
+                if(this.tempQuiz.length != 0 && this.location.length != 0){
                     this.quiz.nomQuiz = this.tempQuiz
+                    this.quiz.geoPoint = this.location
                     this.pushToDatabase();
                     this.resetQuiz();
                     this.resetField();
                     this.retrieveQuizzes();
                     this.inputBorder = '#ccc';
-                }else{
+                    this.mapBorder = '#ccc';
+                }else if(this.tempQuiz.length == 0 && this.location.length == 0){
                     this.inputBorder = '#ff0000';
+                    this.mapBorder = '#ff0000';
+                }else if(this.tempQuiz.length == 0){
+                    this.inputBorder = '#ff0000';
+                }else{
+                    this.mapBorder = '#ff0000';
                 }
             },
             resetQuiz: function(){
                 this.quiz = {
-                    "nomQuiz":""
-                }  
+                    "nomQuiz":"",
+                    "geoPoint":""
+                }
             },  
             resetField: function(){
                 this.tempQuiz = "";
+                this.location = "";
             },
             pushToDatabase(){
                  let db = firebase.firestore();
                  var tempQuiz = {}
-                 tempQuiz.nomQuiz = this.tempQuiz
+                 tempQuiz.nomQuiz = this.tempQuiz;
+                 var GeoPoint = require('geopoint');
+                 tempQuiz.position = new firebase.firestore.GeoPoint(this.quiz.geoPoint.lat, this.quiz.geoPoint.lng);
                  let n = this.quizzes.length
               
                 console.log(this.quizzes.length,this.quizzes);
@@ -114,11 +129,17 @@ export default {
                 fillOpacity: 0.5,
                 radius: 50
             }).addTo(this.mymap);
-            this.mymap.on('click', onMapClick);
-            function onMapClick(e) {
-                var marker = L.marker(e.latlng);
-                this.mymap.addLayer(marker);
-            }
+
+            this.mymap.on('click', this.onMapClick);
+            
+            },
+            onMapClick: function (e) {
+                if(this.myMarker != ""){
+                    this.mymap.removeLayer(this.myMarker)
+                }
+                this.myMarker = L.marker(e.latlng);
+                this.mymap.addLayer(this.myMarker);
+                this.location = e.latlng;
             }
             
             },

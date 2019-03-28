@@ -9,6 +9,7 @@
   "dependencies": {
     "esri-leaflet": "^2.2.4",
     "firebase": "^5.8.2",
+    "geopoint": "^1.0.1",
     "v-color": "^1.1.2",
     "vue": "^2.5.22",
     "vue-color-picker-wheel": "^0.4.3",
