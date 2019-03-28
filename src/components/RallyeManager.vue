@@ -17,10 +17,10 @@
            <h2 class = "listSection">time</h2>
            <table>
              <tr>
-                <th v-for="n in answer.choices" :key ="n"> response id </th>
+                <th v-for="(n,index) in answer.choices" :key="team.name+'in1'+index">{{index}} </th>
              </tr>
              <tr>
-                <td v-for="n in answer.choices" :key ="n"> team answer </td>
+                <td v-for="(n,index) in answer.choices" :key="team.name+'in2'+index">{{n}} </td>
              </tr>
            </table>
         </div>
