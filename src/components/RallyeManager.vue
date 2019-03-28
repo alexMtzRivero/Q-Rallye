@@ -45,7 +45,8 @@ export default {
     return {
       teams: [],
       quizzes: [],
-      mymap:""
+      mymap:"",
+      penaltyForBad:10
     }
   },
   methods: {
@@ -75,7 +76,8 @@ var result = date.toISOString().substr(11, 8);
     },
     getPointsOf:function(team){
       var points = 0;
-      const penaltyForBad = 30;
+      
+      
       if( team.answers!= null){
         // for all the quizz
         for (let i = 0; i < team.answers.length; i++) {
@@ -85,7 +87,7 @@ var result = date.toISOString().substr(11, 8);
             for (let i = 0; i < quiz.choices.length; i++) {
               // if its bad answer we add to the counter
               if(quiz.choices[i]!= this.quizzes[quiz.id].questions[i].goodAnswer)
-                  points+= penaltyForBad;
+                  points+= this.penaltyForBad;
              // console.log(quiz.choices[i],this.quizzes[quiz.id].questions[i].goodAnswer,quiz.choices[i]!= this.quizzes[quiz.id].questions[i].goodAnswer);
                   
             }
@@ -226,7 +228,13 @@ var result = date.toISOString().substr(11, 8);
   mounted() {
     this.$parent.testLogin();
     this.mapInit()
-
+    let db = firebase.firestore();
+          db.collection('Rules').get().then((querySnapshot) => {
+              querySnapshot.docs.forEach(element => {
+                var malus = element.data().malusReponse;
+                this.penaltyForBad = Number(malus);
+              });
+          });
     // gets the data of the teams
     this.getQuestions();
     
