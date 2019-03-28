@@ -69,6 +69,8 @@ var result = date.toISOString().substr(11, 8);
       }
       this.teams.sort((a,b)=>{return a.points-b.points});
        
+       console.log(this.teams);
+       
     },
     getPointsOf:function(team){
       var points = 0;
@@ -78,6 +80,7 @@ var result = date.toISOString().substr(11, 8);
         for (let i = 0; i < team.answers.length; i++) {
           const quiz = team.answers[i];
           // we check the bad choices
+          if( quiz.choices != null){
             for (let i = 0; i < quiz.choices.length; i++) {
               // if its bad answer we add to the counter
               if(quiz.choices[i]!= this.quizzes[quiz.id].questions[i].goodAnswer)
@@ -85,8 +88,11 @@ var result = date.toISOString().substr(11, 8);
              // console.log(quiz.choices[i],this.quizzes[quiz.id].questions[i].goodAnswer,quiz.choices[i]!= this.quizzes[quiz.id].questions[i].goodAnswer);
                   
             }
+          }
             // we add the time they took to complet the quiz
-            points += quiz.endQuiz.seconds - quiz.startQuiz.seconds;
+          if(quiz.endQuiz!=null && quiz.startQuiz!=null){
+              points += quiz.endQuiz.seconds - quiz.startQuiz.seconds;
+          }
             // TODO transform to time
         }
       }
@@ -117,16 +123,16 @@ var result = date.toISOString().substr(11, 8);
         const team = teamList[i];
 
         db.collection(`Groups/${team.name}/Answers`).orderBy("startQuiz").get().then((querySnapshot) => {
-
-          querySnapshot.docs.forEach(element => {
-            if (!team.Answers) {
+        if (team.answers==null) {
               team.answers = [];
-            }
+           }
+          querySnapshot.docs.forEach(element => {
+            
             var toPush = element.data();
             toPush.id = element.id;
             team.answers.push(toPush)
           });
-          console.log(team);
+          console.log("answers of: "+team.name,team,querySnapshot.docs);
           
         })
       }
@@ -164,7 +170,7 @@ var result = date.toISOString().substr(11, 8);
             toPush.id = element.id;
             this.quizzes[quiz].questions.push(toPush);
           });
-          console.log("respuestas",this.quizzes[quiz]);
+          //console.log("respuestas",this.quizzes[quiz]);
           
           
         })
