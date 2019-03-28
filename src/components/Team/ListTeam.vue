@@ -176,7 +176,7 @@ export default {
 }
 
 h1{
-	background: #43D1AF;
+	background: linear-gradient(90deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);	font-size: 140%;
 	padding: 20px 0;
 	font-size: 140%;
 	font-weight: 300;
@@ -195,8 +195,35 @@ h1{
 	padding: 16px;
 	background: #F7F7F7;
 }
+
+@media screen and (min-width: 200px) and (max-width: 640px) {
+  h1{
+    background: linear-gradient(90deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);	font-size: 140%;
+    padding: 20px 0;
+    font-size: 140%;
+    font-weight: 300;
+    text-align: center;
+    color: #fff;
+    margin: -16px -16px 16px -16px;
+    max-width: 60vh;
+    margin: 10px auto;
+    padding: 16px;
+    margin-left: 65px;
+    margin-right: 5px;
+  }
+  .form-style-6{
+	font: 95% Arial, Helvetica, sans-serif;
+	max-width: 60vh;
+	margin: 10px auto;
+	padding: 16px;
+	background: #F7F7F7;
+  margin-left: 65px;
+  margin-right: 5px;
+  }
+}
+
 .form-style-6 h1{
-	background: #43D1AF;
+  background: linear-gradient(90deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);	font-size: 140%;
 	padding: 20px 0;
 	font-size: 140%;
 	font-weight: 300;
@@ -248,30 +275,33 @@ h1{
 }
 
 .form-style-6 button[type="submit"],
-.form-style-6 button[type="button"]{
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	width: 40%;
+.form-style-6 button[type="button"],
+.form-style-6 button {
+	width: 35%;
 	padding: 5px;
-	background: #43D1AF;
-	border: 2px solid #30C29E;
+	background: rgba(16,174,161,1) 33%;
 	color: #fff;
   padding: 10px;
+  border:none;
+  border-radius: 3px;
+  margin: 1px;
 }
 .form-style-6 button[type="submit"]:hover,
-.form-style-6 button[type="button"]:hover{
-	background: #2EBC99;
+.form-style-6 button[type="button"]:hover,
+.form-style-6 button:hover{
+  background: #0E988D;
+  cursor: pointer;
 }
 
 .erreur{
   color:red;
 }
 .bin {
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   float: right;
   position: flex;
+  cursor: pointer;
 }
 
 
