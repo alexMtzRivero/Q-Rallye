@@ -6,8 +6,9 @@
         <br/>
         <br/>
         <label for="teamName">Position du quiz :</label><br>
-        <br/>
-            <div id="mapid" class="mapid" v-bind:style="{'border-color': mapBorder}"> </div>
+        
+            <div id="mapid" class="mapid" v-bind:style="{'border': mapBorder}"> </div>
+            <br/><label class="erreur">{{generalComents}}</label>
         <br/><br/>
         <button v-on:click="addQuiz">Ajouter</button>
     </div>
@@ -37,7 +38,8 @@ export default {
                 mapBorder:'',
                 mymap:"",
                 myMarker: "",
-                location: ""
+                location: "",
+                generalComents:""
             }
         },
         methods: {
@@ -56,7 +58,8 @@ export default {
                     this.mapBorder = '#ccc';
                 }else if(this.tempQuiz.length == 0 && this.location.length == 0){
                     this.inputBorder = '#ff0000';
-                    this.mapBorder = '#ff0000';
+                    this.mapBorder = '2px solid red';
+                    this.generalComents = "Veuillez localiser le lieu du quiz";
                 }else if(this.tempQuiz.length == 0){
                     this.inputBorder = '#ff0000';
                 }else{
@@ -122,7 +125,16 @@ export default {
             this.tileLayer.addTo(this.mymap);
 
             this.mymap.on('click', this.onMapClick);
-            
+            let db = firebase.firestore();
+            db.collection('Quizzes').get().then((querySnapshot) => {
+                    querySnapshot.docs.forEach(element => {
+                        
+                        var longitude = element.data().position.longitude;
+                        var latitude = element.data().position.latitude;
+                        console.log(longitude,latitude);
+                        var marker = L.marker([latitude, longitude]).addTo(this.mymap);
+                    });
+                });
             },
             onMapClick: function (e) {
                 if(this.myMarker != ""){
@@ -136,6 +148,7 @@ export default {
             },
             mounted(){
                 this.mapInit();
+                this.printQuizPoint();
                 this.retrieveQuizzes();
                 let db = firebase.firestore();
                 
@@ -159,10 +172,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #mapid { 
+  margin-top: 5px;
   display: -webkit-inline-box;
   height: 50vw;
   width: 90%;
-
+  z-index: 1;
 }
 h1{
 	background: #43D1AF;
@@ -213,6 +227,7 @@ h1{
 	padding: 5px;
 	color: #555;
 	font: 95% Arial, Helvetica, sans-serif;
+    margin-top: 5px;
 }
 .form-style-6 input[type="text"]:focus,
 .form-style-6 input[type="date"]:focus,
@@ -247,6 +262,34 @@ h1{
 .form-style-6 button:hover{
   background: #0E988D;
   cursor: pointer;
+}
+
+.erreur{
+  color:red;
+  font-weight: bold;
+}
+
+@media screen and (min-width: 200px) and (max-width: 640px) {
+  h1{
+    background: linear-gradient(90deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);	font-size: 140%;
+    padding: 20px 0;
+    font-size: 140%;
+    font-weight: 300;
+    text-align: center;
+    color: #fff;
+    margin: -16px -16px 16px -16px;
+    max-width: 60vh;
+    margin: 10px auto;
+    padding: 16px;
+  }
+  .form-style-6{
+	font: 95% Arial, Helvetica, sans-serif;
+	max-width: 60vh;
+	margin: 10px auto;
+	background: #F7F7F7;
+  margin-left: 65px;
+  margin-right: 5px;
+  }
 }
 
 </style>

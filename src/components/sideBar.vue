@@ -177,7 +177,10 @@ a:hover, a:visited, a:link, a:active
   width: 200px;
   background: linear-gradient(180deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);
   height: 100%;
-  
+  z-index: 2;
+}
+.holder-show div{
+  z-index: 2;
 }
 }
 
