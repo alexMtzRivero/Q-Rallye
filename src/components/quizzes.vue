@@ -148,7 +148,6 @@ export default {
             },
             mounted(){
                 this.mapInit();
-                this.printQuizPoint();
                 this.retrieveQuizzes();
                 let db = firebase.firestore();
                 

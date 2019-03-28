@@ -285,7 +285,7 @@ td{
 
 .form-style-6{
 	font: 95% Arial, Helvetica, sans-serif;
-	max-width: 85%;
+	max-width: 75%;
 	margin: 10px auto;
 	padding: 16px;
 	background: #F7F7F7;
@@ -363,6 +363,51 @@ background: linear-gradient(90deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%
 }
 .refresh_button {
   float: right;
+}
+
+@media screen and (min-width: 200px) and (max-width: 640px) {
+  .logo {
+  width: 15%;
+  float: left;
+  }
+
+  h1{
+    background: linear-gradient(90deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);	font-size: 140%;
+    padding: 20px 0;
+    font-size: 140%;
+    font-weight: 300;
+    text-align: center;
+    color: #fff;
+    margin: -16px -16px 16px -16px;
+    max-width: 60vh;
+    margin: 10px auto;
+    padding: 16px;
+  }
+
+  .form-style-6 button[type="submit"],
+  .form-style-6 button[type="button"],
+  .form-style-6 button {
+    width: 30%;
+    padding: 5px;
+    background: rgba(16,174,161,1) 33%;
+    color: #fff;
+    padding: 10px;
+    border:none;
+    border-radius: 3px;
+  }
+
+  .form-style-6{
+	font: 95% Arial, Helvetica, sans-serif;
+	max-width: 60vh;
+	margin: 10px auto;
+	background: #F7F7F7;
+  margin-left: 65px;
+  margin-right: 5px;
+  }
+
+  #mapid { 
+    z-index: 1;
+  }
 }
 
 </style>
