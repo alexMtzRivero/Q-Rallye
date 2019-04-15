@@ -1,39 +1,14 @@
 <template>
-  <div class="name">
+  <div class="form-style-6">
 
     <h1>Ajout de règles</h1>
-
-    <h3>catégorie</h3>
-    <input class="input" type="text" v-model="ruleTitle"/>
-    <br>
-    <h3>règle</h3>
-    <textarea class="textArea" rows="10" v-model="ruleText"></textarea>
-    <br>
-    <button type="button" @click='addRule'>Ajouter</button>
-
-
-    <br><br><br><br>
-    <h1>Liste des règles</h1>
-    <li>
-      <ul v-for="(rule,index) in rules" class="rule" :key="rule.id">
-
-        <div class="ruleDiv" @mousedown="onRuleMouseDown(index)" @mouseup="onRuleMouseUp(index)">
-
-          <img id="editBtn" v-if="(editing!=index)" @click='editRule(index, rule.data().rule)' src="../assets/edit_icon.png"/>
-          <h3 id="ruleTitle">{{rule.data().title}}</h3>
-
-          <textarea class="textArea" rows="10" v-if="(editing==index)" v-model="updatedRule" type="text"/>
-          <p v-else>{{rule.data().rule}}</p>
-
-          <br>
-
-          <button  v-if="(editing!=index)" type="button" @click='removeRule(rule.id, index)'>Supprimer</button>
-          <button  v-else type="button" @click='saveModifiedRule(rule.id)'>Enregistrer</button>
-
-        </div>
-
-      </ul>
-    </li>
+    <h3>Malus :</h3>
+    <label>Malus pour une mauvaise réponse :</label><br>
+    <input v-model="malusReponse" type="text" id="malusReponse"/><br>
+    <button @click="addMalusReponse(malusReponse)">Ajouter le malus</button><br><br>
+    <label>Malus pour checkpoint manqué :</label><br>
+    <input v-model="malusCheckpoint" type="text" id="malusCheckpoint"/><br>
+    <button @click="addMalusCheckpoint(malusCheckpoint)">Ajouter le malus</button><br><br>
 
   </div>
 </template>
@@ -51,68 +26,24 @@ export default {
   },
   data(){
     return{
-      rules: "",
-      ruleTitle: "",
-      ruleText:"",
-      db:firebase.firestore(),
-      editing:-1,
-      clickedRule: -1,
-      updatedRule: "",
+      malusReponse:"",
+      malusCheckpoint:""
     }
   },
   methods:{
-    addRule: function(){
-      this.db.collection('Rules').add({title: this.ruleTitle, rule: this.ruleText, position: this.rules.length})
-      this.getRules();
-    },
-    removeRule: function(ref, index){
-      this.db.collection('Rules').doc(ref).delete();
-      this.rules.splice(index, 1);
-    },
-    saveModifiedRule: function(ref){
-      this.db.collection('Rules').doc(ref).update({rule: this.updatedRule});
-      this.editing = -1;
-      this.getRules();
-    },
-    onRuleMouseDown: function(index){
-      this.clickedRule = index;
-    },
-    onRuleMouseUp: function(index){
-      if(this.clickedRule != -1 && this.clickedRule != index){
-        this.shift(this.clickedRule, index);
-        }
-        this.clickedRule = -1;
-    },
-    shift: function(index1, index2){
-      var temp = this.rules[index1];
-      this.rules.splice(index1, 1, this.rules[index2]);
-      this.rules.splice(index2, 1, temp);
-
-      var tempPos = this.rules[index1].data().position;
-      this.rules[index1].data().position = this.rules[index2].data().position;
-      this.rules[index2].data().position = tempPos;
-
-      console.log("index1 new position : "+this.rules[index1].data().position);
-      console.log("index2 new position : "+this.rules[index2].data().position);
-
-      this.db.collection('Rules').doc(this.rules[index1].id).update({position: this.rules[index1].data().position});
-      this.db.collection('Rules').doc(this.rules[index2].id).update({position: this.rules[index2].data().position});
+    addMalusReponse: function(malusReponse){
+      var db = firebase.firestore();
+      db.collection("Rules").doc("Malus").update({malusReponse: this.malusReponse}).then().catch((err) => console.log(err))
 
     },
-    editRule: function(index, rule){
-      this.editing = index;
-      this.updatedRule = rule;
-    },
-    getRules: function(){
-      this.db.collection('Rules').orderBy('position').get().then((querySnapshot) => {
-        this.rules = querySnapshot.docs;
-      })
+    addMalusCheckpoint: function(malusCheckpoint){
+      var db = firebase.firestore();
+      db.collection("Rules").doc("Malus").update({malusCheckpoint: this.malusCheckpoint}).then().catch((err) => console.log(err))
     }
   },
   // on create
   mounted(){
     this.$parent.testLogin();
-    this.getRules();
   }
 }
 </script>
@@ -120,30 +51,113 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-#editBtn {
-  width: 2%;
-  float: right;
+h1{
+	background: #43D1AF;
+	padding: 20px 0;
+	font-size: 140%;
+	font-weight: 300;
+	text-align: center;
+	color: #fff;
+	margin: 10px auto;
+	padding: 16px;
 }
 
-.ruleDiv {
-  text-align: left;
-
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
+.form-style-6{
+	font: 95% Arial, Helvetica, sans-serif;
+	max-width: 70%;
+	margin: 10px auto;
+	background: #F7F7F7;
+}
+.form-style-6 h1{
+	background: linear-gradient(90deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);	font-size: 140%;
+	font-size: 140%;
+	font-weight: 300;
+	text-align: center;
+	color: #fff;
+}
+.form-style-6 input[type="text"],
+.form-style-6 input[type="date"],
+.form-style-6 input[type="datetime"],
+.form-style-6 input[type="email"],
+.form-style-6 input[type="number"],
+.form-style-6 input[type="search"],
+.form-style-6 input[type="time"],
+.form-style-6 input[type="url"],
+.form-style-6 textarea,
+.form-style-6 select 
+{
+	-webkit-transition: all 0.30s ease-in-out;
+	-moz-transition: all 0.30s ease-in-out;
+	-ms-transition: all 0.30s ease-in-out;
+	-o-transition: all 0.30s ease-in-out;
+	outline: none;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 60%;
+	background: #fff;
+	border: 1px solid #ccc;
+	padding: 5px;
+	color: #555;
+	font: 95% Arial, Helvetica, sans-serif;
+    margin-top: 5px;
+}
+.form-style-6 input[type="text"]:focus,
+.form-style-6 input[type="date"]:focus,
+.form-style-6 input[type="datetime"]:focus,
+.form-style-6 input[type="email"]:focus,
+.form-style-6 input[type="number"]:focus,
+.form-style-6 input[type="search"]:focus,
+.form-style-6 input[type="time"]:focus,
+.form-style-6 input[type="url"]:focus,
+.form-style-6 textarea:focus,
+.form-style-6 select:focus
+{
+	box-shadow: 0 0 5px #43D1AF;
+	padding: 5px;
+	border: 1px solid #43D1AF;
 }
 
-.textArea {
-  width: 75%;
-  resize: both;
+.form-style-6 button[type="submit"],
+.form-style-6 button[type="button"],
+.form-style-6 button {
+	width: 35%;
+	padding: 5px;
+	background: rgba(16,174,161,1) 33%;
+	color: #fff;
+  padding: 10px;
+  border:none;
+  border-radius: 3px;
+  margin: 1px;
+}
+.form-style-6 button[type="submit"]:hover,
+.form-style-6 button[type="button"]:hover,
+.form-style-6 button:hover{
+  background: #0E988D;
+  cursor: pointer;
 }
 
-.input {
-  width: 75%;
+@media screen and (min-width: 200px) and (max-width: 640px) {
+  h1{
+    background: linear-gradient(90deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);	font-size: 140%;
+    padding: 20px 0;
+    font-size: 140%;
+    font-weight: 300;
+    text-align: center;
+    color: #fff;
+    margin: -16px -16px 16px -16px;
+    max-width: 60vh;
+    margin: 10px auto;
+    padding: 16px;
+  }
+  .form-style-6{
+	font: 95% Arial, Helvetica, sans-serif;
+	max-width: 60vh;
+	margin: 10px auto;
+	background: #F7F7F7;
+  margin-left: 65px;
+  margin-right: 5px;
+  }
 }
 
 </style>

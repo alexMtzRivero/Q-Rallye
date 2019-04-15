@@ -1,5 +1,6 @@
 <template>
   <div class="form-style-6">
+    <img class="logo" src="../assets/logo_appli.png" />
     <button class="refresh_button" @click="logPlayers()"> Refresh</button>
     <br>
     <br>
@@ -44,7 +45,8 @@ export default {
     return {
       teams: [],
       quizzes: [],
-      mymap:""
+      mymap:"",
+      penaltyForBad:10
     }
   },
   methods: {
@@ -74,7 +76,8 @@ var result = date.toISOString().substr(11, 8);
     },
     getPointsOf:function(team){
       var points = 0;
-      const penaltyForBad = 30;
+      
+      
       if( team.answers!= null){
         // for all the quizz
         for (let i = 0; i < team.answers.length; i++) {
@@ -84,7 +87,7 @@ var result = date.toISOString().substr(11, 8);
             for (let i = 0; i < quiz.choices.length; i++) {
               // if its bad answer we add to the counter
               if(quiz.choices[i]!= this.quizzes[quiz.id].questions[i].goodAnswer)
-                  points+= penaltyForBad;
+                  points+= this.penaltyForBad;
              // console.log(quiz.choices[i],this.quizzes[quiz.id].questions[i].goodAnswer,quiz.choices[i]!= this.quizzes[quiz.id].questions[i].goodAnswer);
                   
             }
@@ -225,7 +228,13 @@ var result = date.toISOString().substr(11, 8);
   mounted() {
     this.$parent.testLogin();
     this.mapInit()
-
+    let db = firebase.firestore();
+          db.collection('Rules').get().then((querySnapshot) => {
+              querySnapshot.docs.forEach(element => {
+                var malus = element.data().malusReponse;
+                this.penaltyForBad = Number(malus);
+              });
+          });
     // gets the data of the teams
     this.getQuestions();
     
@@ -237,6 +246,10 @@ var result = date.toISOString().substr(11, 8);
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.logo {
+  width: 5%;
+  float: left;
+}
 #mapid { 
   display: -webkit-inline-box;
   height: 50vw;
@@ -272,20 +285,23 @@ td{
 
 .form-style-6{
 	font: 95% Arial, Helvetica, sans-serif;
-	max-width: 85%;
+	max-width: 75%;
 	margin: 10px auto;
 	padding: 16px;
 	background: #F7F7F7;
 }
 .form-style-6 h1{
-	background: #43D1AF;
-	padding: 20px 0;
+background: linear-gradient(90deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);	padding: 20px 0;
 	font-size: 140%;
 	font-weight: 300;
 	text-align: center;
 	color: #fff;
 	margin: 0px 0px 3px 0px;
 }
+.form-style-6 h1:hover{
+  cursor: pointer;
+}
+
 .form-style-6 input[type="text"],
 .form-style-6 input[type="date"],
 .form-style-6 input[type="datetime"],
@@ -330,25 +346,68 @@ td{
 
 .form-style-6 button[type="submit"],
 .form-style-6 button[type="button"],
-.form-style-6 button{
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
+.form-style-6 button {
 	width: 20%;
-	background: #43D1AF;
-	border: 2px solid #30C29E;
+	padding: 5px;
+	background: rgba(16,174,161,1) 33%;
 	color: #fff;
   padding: 10px;
-  margin: 0px 0px 3px 0px;
+  border:none;
+  border-radius: 3px;
 }
 .form-style-6 button[type="submit"]:hover,
 .form-style-6 button[type="button"]:hover,
-.form-style-6 button{
-	background: #2EBC99;
+.form-style-6 button:hover{
+  background: #0E988D;
+  cursor: pointer;
 }
-
 .refresh_button {
   float: right;
+}
+
+@media screen and (min-width: 200px) and (max-width: 640px) {
+  .logo {
+  width: 15%;
+  float: left;
+  }
+
+  h1{
+    background: linear-gradient(90deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);	font-size: 140%;
+    padding: 20px 0;
+    font-size: 140%;
+    font-weight: 300;
+    text-align: center;
+    color: #fff;
+    margin: -16px -16px 16px -16px;
+    max-width: 60vh;
+    margin: 10px auto;
+    padding: 16px;
+  }
+
+  .form-style-6 button[type="submit"],
+  .form-style-6 button[type="button"],
+  .form-style-6 button {
+    width: 30%;
+    padding: 5px;
+    background: rgba(16,174,161,1) 33%;
+    color: #fff;
+    padding: 10px;
+    border:none;
+    border-radius: 3px;
+  }
+
+  .form-style-6{
+	font: 95% Arial, Helvetica, sans-serif;
+	max-width: 60vh;
+	margin: 10px auto;
+	background: #F7F7F7;
+  margin-left: 65px;
+  margin-right: 5px;
+  }
+
+  #mapid { 
+    z-index: 1;
+  }
 }
 
 </style>

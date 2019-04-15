@@ -1,19 +1,21 @@
 <template>
     <div>
-         <h1>Begin code</h1>
+         <div class="form-style-6">
+         <h1>Code de début</h1>
             <div class="shown canvas">
                 <div  id="qrholder" ref ="beginCode"></div><br>
                 <button @click="printBeginEnd(index,'Begin')"> Imprimer </button>
             </div>
             <br>
-           
-             <h1>End Code</h1>
+        </div> 
+        <div class="form-style-6">
+             <h1>Code de fin</h1>
             <div class="shown canvas">
                 <div  id="qrholder" ref ="endCode"></div><br>
                 <button @click="printBeginEnd(index,'End')"> Imprimer </button>
             </div>
             <br>
-           
+        </div> 
         <div class="form-style-6" v-for="(quiz,index) in quizzes"  v-bind:key="`${quiz.id}+${index}`">
             <h1>{{quiz.id}}</h1>
             <div :class="`${(showedQR == index)?'shown':'hidden'} canvas` ">
@@ -233,7 +235,6 @@ export default {
     padding: 0px 50%;
     margin-left: -75px;
     /* transform: translateX(-10vh); */
-    
 }   
 .shown{
 
@@ -244,7 +245,7 @@ height: 0px;
 }
 
 h1{
-	background: #43D1AF;
+	background: linear-gradient(90deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);	font-size: 140%;
 	padding: 20px 0;
 	font-size: 140%;
 	font-weight: 300;
@@ -261,7 +262,7 @@ h1{
 	background: #F7F7F7;
 }
 .form-style-6 h1{
-	background: #43D1AF;
+	background: linear-gradient(90deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);	font-size: 140%;
 	font-size: 140%;
 	font-weight: 300;
 	text-align: center;
@@ -311,24 +312,21 @@ h1{
 
 .form-style-6 button[type="submit"],
 .form-style-6 button[type="button"],
-.form-style-6 button
-{
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	width: 40%;
+.form-style-6 button {
+	width: 35%;
 	padding: 5px;
-	background: #43D1AF;
-	border: 2px solid #30C29E;
+	background: rgba(16,174,161,1) 33%;
 	color: #fff;
-    padding: 10px;
-    margin-bottom: 10px;
+  padding: 10px;
+  border:none;
+  border-radius: 3px;
+  margin: 1px;
 }
 .form-style-6 button[type="submit"]:hover,
 .form-style-6 button[type="button"]:hover,
-.form-style-6 button:hover
-{
-	background: #2EBC99;
+.form-style-6 button:hover{
+  background: #0E988D;
+  cursor: pointer;
 }
 
 .listAnswers{
@@ -344,6 +342,29 @@ h1{
 
 .errorMessage {
     color: #ff0000;
+}
+
+@media screen and (min-width: 200px) and (max-width: 640px) {
+  h1{
+    background: linear-gradient(90deg, rgba(255,221,88,1) 0%,rgba(100,205,129,1) 33%, rgba(16,174,161,1) 67%,rgba(1,136,168,1) 100%);	font-size: 140%;
+    padding: 20px 0;
+    font-size: 140%;
+    font-weight: 300;
+    text-align: center;
+    color: #fff;
+    margin: -16px -16px 16px -16px;
+    max-width: 60vh;
+    margin: 10px auto;
+    padding: 16px;
+  }
+  .form-style-6{
+	font: 95% Arial, Helvetica, sans-serif;
+	max-width: 60vh;
+	margin: 10px auto;
+	background: #F7F7F7;
+  margin-left: 65px;
+  margin-right: 5px;
+  }
 }
 
 </style>
