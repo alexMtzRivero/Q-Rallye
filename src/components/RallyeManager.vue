@@ -52,9 +52,10 @@ export default {
   methods: {
  timeOfTeam: function (team) {
       var date = new Date(null);
+        
       date.setSeconds(team.points); 
 var result = date.toISOString().substr(11, 8);
-      return  result//`${date.getDay()}:${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}` ;
+      return  result
     },
     changeDisplay:function (index) {
       this.zoomInTeam();
@@ -62,6 +63,7 @@ var result = date.toISOString().substr(11, 8);
     },
     logPlayers: function () {
       this.updatePoints();
+      this.updatePaths();
       this.$forceUpdate();
     },
     updatePoints: function(){
@@ -71,7 +73,7 @@ var result = date.toISOString().substr(11, 8);
       }
       this.teams.sort((a,b)=>{return a.points-b.points});
        
-       console.log(this.teams);
+       //console.log(this.teams);
        
     },
     getPointsOf:function(team){
@@ -86,7 +88,7 @@ var result = date.toISOString().substr(11, 8);
           if( quiz.choices != null){
             for (let i = 0; i < quiz.choices.length; i++) {
               // if its bad answer we add to the counter
-              if(quiz.choices[i]!= this.quizzes[quiz.id].questions[i].goodAnswer)
+              if(this.quizzes[quiz.id].questions[i] && quiz.choices[i]!= this.quizzes[quiz.id].questions[i].goodAnswer)
                   points+= this.penaltyForBad;
              // console.log(quiz.choices[i],this.quizzes[quiz.id].questions[i].goodAnswer,quiz.choices[i]!= this.quizzes[quiz.id].questions[i].goodAnswer);
                   
@@ -96,26 +98,30 @@ var result = date.toISOString().substr(11, 8);
           if(quiz.endQuiz!=null && quiz.startQuiz!=null){
               points += quiz.endQuiz.seconds - quiz.startQuiz.seconds;
           }
-            // TODO transform to time
+            
         }
       }
+       if(team.endRallye && team.startRallye)
+        points += team.endRallye.seconds - team.startRallye.seconds;
 
       return points;
     },
     updatePaths: function(){
+        console.log('entro a la funcion ');
+        
         for (let i = 0; i < this.teams.length; i++) {
           const team = this.teams[i];
           var path =[]
           for (let i = 0; i < team.answers.length; i++) {
             const answer = team.answers[i].id;
-            // TODO put all the location of the answers in a dictionary called an
-            const latLong = this.answers[answer];
-            path.push([latLong.lat,latLong.long]);
+            const latLong = this.quizzes[answer].position;
+            path.push([latLong.latitude,latLong.longitude]);
 
 
           }
-         
+          console.log(path,'poly line addes');
         var polyline = L.polyline(path, {color: `${team.color}`}).addTo(this.mymap);
+              
                   
         }
     },
@@ -135,7 +141,7 @@ var result = date.toISOString().substr(11, 8);
             toPush.id = element.id;
             team.answers.push(toPush)
           });
-          console.log("answers of: "+team.name,team,querySnapshot.docs);
+          //console.log("answers of: "+team.name,team,querySnapshot.docs);
           
         })
       }
