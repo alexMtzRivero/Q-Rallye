@@ -14,7 +14,7 @@
       <div v-if="team.displayed" >
         <div v-for="(answer,index) in team.answers" v-bind:key="team.name+index" class="horizontal">
            <h2 class = "listSection">{{answer.id}}</h2>
-           <h2 class = "listSection">time</h2>
+           <h2 class = "listSection">{{answer.endQuiz.seconds-answer.startQuiz.seconds}} seg</h2>
            <table>
              <tr>
                 <th v-for="(n,index) in answer.choices" :key="team.name+'in1'+index">{{index}} </th>
