@@ -58,7 +58,7 @@ var result = date.toISOString().substr(11, 8);
       return  result
     },
     changeDisplay:function (index) {
-      this.zoomInTeam();
+      this.zoomInTeam(this.teams[index].path);
       this.teams[index].displayed = !this.teams[index].displayed;
     },
     logPlayers: function () {
@@ -121,7 +121,7 @@ var result = date.toISOString().substr(11, 8);
           }
           console.log(path,'poly line addes');
         var polyline = L.polyline(path, {color: `${team.color}`}).addTo(this.mymap);
-              
+           team.path = path;   
                   
         }
     },
@@ -199,8 +199,9 @@ var result = date.toISOString().substr(11, 8);
         this.getPlayers();
       })
     },
-    zoomInTeam: function () {
-      this.mymap.fitBounds([[45.188096, 5.718452],[45.199096, 5.818452]]);
+    zoomInTeam: function (path) {
+      if(path && path.length>0)
+        this.mymap.fitBounds(path);
     },
     mapInit: function () {
       this.mymap = L.map('mapid', {
@@ -216,15 +217,6 @@ var result = date.toISOString().substr(11, 8);
       );
       this.tileLayer.addTo(this.mymap);
 
-      var marker = L.marker([45.188096, 5.718452]).addTo(this.mymap);
-
-      var circle = L.circle([45.188096, 5.718452], {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.5,
-        radius: 50
-      }).addTo(this.mymap);
-
       
     }
 
@@ -239,6 +231,8 @@ var result = date.toISOString().substr(11, 8);
               querySnapshot.docs.forEach(element => {
                 var malus = element.data().malusReponse;
                 this.penaltyForBad = Number(malus);
+                console.log(malus);
+                
               });
           });
     // gets the data of the teams
