@@ -11,10 +11,10 @@
            <h1 @click="changeDisplay(indexT)">{{team.name}}  {{team.timeText}}</h1>
       </div>
      
-      <div v-if="team.displayed" >
+      <div v-if="team.displayed"  style="display: grid;">
         <div v-for="(answer,index) in team.answers" v-bind:key="team.name+index" class="horizontal">
            <h2 class = "listSection">{{answer.id}}</h2>
-           <h2 class = "listSection">{{answer.endQuiz.seconds-answer.startQuiz.seconds}} seg</h2>
+           <h2 class = "listSection">{{(answer.endQuiz && answer.startQuiz)?(answer.endQuiz.seconds-answer.startQuiz.seconds):0}} seg</h2>
            <table>
              <tr>
                 <th v-for="(n,index) in answer.choices" :key="team.name+'in1'+index">{{index}} </th>
