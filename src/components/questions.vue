@@ -18,6 +18,7 @@
         </div> 
         <div class="form-style-6" v-for="(quiz,index) in quizzes"  v-bind:key="`${quiz.id}+${index}`">
             <h1>{{quiz.id}}</h1>
+            <img class="bin" src="../assets/bin.png" @click="deleteQuiz(index, quiz.id)"/>
             <div :class="`${(showedQR == index)?'shown':'hidden'} canvas` ">
                 <div  id="qrholder" ref ="quizhoder"></div><br>
                 <button @click="print(index,quiz.id)"> Imprimer </button>
@@ -51,14 +52,19 @@
                 <label class="errorMessage" v-if='errorMessage.length!=0 && selectedQuiz == index'>{{errorMessage}}</label>
             </div>
         </div>
+        
     </div>
 </template>
 <script>
 const QRCode = require('../Js/qrcode.js').default
 import firebase,{ functions } from "firebase";
+import ConfirmDialog from './ConfirmDialog.vue'
 
 export default {
         name: 'ListQuestion',
+        components:{
+            ConfirmDialog
+        },
         data () {
             return {
                 quizzes:[],
@@ -81,6 +87,24 @@ export default {
                 console.log(this.quizzes);
                 
             },
+            deleteQuiz: function (index,ref){
+                if(confirm('voulez vous effacer cette element?')){    
+                var db = firebase.firestore();
+            
+                db.collection("Quizzes").doc(ref).delete().then(function() {
+                    console.log('success');
+                    console.log('Delete success: ');
+                     
+                    }).catch(function(err) {
+                    console.log('error');
+                    
+                    console.log('Delete failed, see console,');
+                    console.warn(err);
+                    });
+                this.quizzes.splice(index, 1);
+                }
+            },
+
             selectToAddQuestion(quizzIndex){
                 this.tempQuestion = {};
                 this.selectedQuiz =  (quizzIndex == this.selectedQuiz)? -1: quizzIndex;
