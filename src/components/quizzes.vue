@@ -2,7 +2,7 @@
     <div class="form-style-6">
         <h1>Ajouter un quiz :</h1>
         <label for="teamName">Nom du quiz :</label><br>
-        <input v-model="tempQuiz" v-bind:style="{'border-color': inputBorder}" type="text" id="nomQuiz"/>
+        <input v-model="tempQuiz" v-bind:style="{'border-color': inputBorder}" type="text"   id="nomQuiz"/>
         <br/>
         <br/>
         <label for="teamName">Position du quiz :</label><br>

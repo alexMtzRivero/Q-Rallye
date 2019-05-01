@@ -3,7 +3,7 @@
   <div class="form-style-6">
     <h1>Ajouter une équipe :</h1>
     <label for="teamName">Nom d'équipe :</label><br>
-    <input id="teamName" type="text" v-model="tempName" /><br>
+    <input id="teamName" :maxlength="30" @keydown.space.prevent type="text" v-model="tempName" /><br>
     <label class="erreur" v-if="error">Champ équipe incorrect</label>
     <br>
     

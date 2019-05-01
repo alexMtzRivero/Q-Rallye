@@ -112,6 +112,7 @@ export default {
         this.refreshList();
       });
     },deleteTeam: function (index,ref){   
+       if(confirm('voulez vous effacer cette element?')){   
       console.log("try to delet");
          
       var db = firebase.firestore();
@@ -128,6 +129,7 @@ export default {
         });
       this.teams.splice(index, 1);
       this.runners.splice(index, 1);
+       }
     },
     resetField: function(){
         this.tempFirstName = "";
