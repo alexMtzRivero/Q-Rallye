@@ -90,18 +90,18 @@ export default {
             deleteQuiz: function (index,ref){
                 if(confirm('voulez vous effacer cette element?')){    
                 var db = firebase.firestore();
+                var deleteFn = firebase.functions().httpsCallable('recursiveDelete');
             
-                db.collection("Quizzes").doc(ref).delete().then(function() {
+                deleteFn({ path: 'Quizzes/'+ref }).then(() => {
                     console.log('success');
                     console.log('Delete success: ');
-                     
+                    this.quizzes.splice(index, 1);
                     }).catch(function(err) {
                     console.log('error');
-                    
                     console.log('Delete failed, see console,');
                     console.warn(err);
+                    alert("impossible de supprimer le Quiz");
                     });
-                this.quizzes.splice(index, 1);
                 }
             },
 
