@@ -118,17 +118,17 @@ export default {
       var db = firebase.firestore();
       var deleteFn = firebase.functions().httpsCallable('recursiveDelete');
 
-      deleteFn({ path: 'Groups/'+ref }).then(function(result) {
+      deleteFn({ path: 'Groups/'+ref }).then((result) => {
           console.log('success');
           console.log('Delete success: ' + JSON.stringify(result));
+          this.teams.splice(index, 1);
+          this.runners.splice(index, 1);
         }).catch(function(err) {
           console.log('error');
-          
           console.log('Delete failed, see console,');
           console.warn(err);
+          alert("impossible d'effacer cette équipe");
         });
-      this.teams.splice(index, 1);
-      this.runners.splice(index, 1);
        }
     },
     resetField: function(){

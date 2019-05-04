@@ -43,12 +43,12 @@ exports.recursiveDelete = functions
   })
   .https.onCall((data, context) => {
     // Only allow admin users to execute this function.
-    if (!(context.auth && context.auth.token && context.auth.token.admin)) {
+    /* if (!(context.auth && context.auth.token && context.auth.token.admin)) {
       throw new functions.https.HttpsError(
         'permission-denied',
         'Must be an administrative user to initiate delete.'
       );
-    }
+    } */
 
     const path = data.path;
     console.log(
@@ -63,7 +63,7 @@ exports.recursiveDelete = functions
         project: process.env.GCLOUD_PROJECT,
         recursive: true,
         yes: true,
-        token: functions.config().fb.token
+        token: ""
       })
       .then(() => {
         return {
