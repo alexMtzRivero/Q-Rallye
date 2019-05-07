@@ -44,6 +44,14 @@ export default {
   // on create
   mounted(){
     this.$parent.testLogin();
+    let db = firebase.firestore();
+      db.collection('Rules').get().then((querySnapshot) => {
+              querySnapshot.docs.forEach(element => {
+                var malus = element.data().malusReponse;
+                this.malusCheckpoint = Number(element.data().malusCheckpoint);
+                this.malusReponse = Number(malus);
+              });
+          });
   }
 }
 </script>
