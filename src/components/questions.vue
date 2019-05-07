@@ -49,7 +49,7 @@
                 <input type="text" v-bind:style="{'border-color': optionInputBorder}" v-model="tempOption"><br><br>
                 <button @click="addOptionToTemp">Ajouter la réponse</button>
                 <br>
-                <button type="button" v-if="Object.keys(tempQuestion).includes('choices') && tempQuestion.choices.length > 1" @click="pushTempTo(index)">Ajouter</button>
+                <button type="button" v-if="Object.keys(tempQuestion).includes('choices') && tempQuestion.choices.length > 1" @click="pushTempTo(index)">{{quesToEdit?"Modifier":"Ajouter"}}</button>
                 <br>
                 <label class="errorMessage" v-if='errorMessage.length!=0 && selectedQuiz == index'>{{errorMessage}}</label>
             </div>
@@ -116,8 +116,9 @@ export default {
                  this.quesToEdit = question.id;
                  this.quizToEdit = quiz.id
                  this.tempQuestion = question;
-                 this.selectedQuiz =  (index == this.selectedQuiz)? -1: index;
-                console.log(question, quiz);
+                 this.selectedQuiz =   index;
+                
+               
                 
             },
             change(index){
