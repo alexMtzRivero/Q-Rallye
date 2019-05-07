@@ -42,7 +42,7 @@
                     <label>Réponses :</label><br>
                     <label>(cocher la bonne réponse)</label><br>
                     <div v-for="(answer,indexT) in tempQuestion.choices" :key="`${indexT}+${answer}`">
-                        <input  type="radio" name="answer" :value="indexT" v-model="tempQuestion.goodAnswer" >{{answer}} <br>
+                        <input  type="radio" name="answer" :value="indexT" v-model="tempQuestion.goodAnswer" ><label v-on:click="change(indexT)">{{answer}}</label> <br>
                     </div>
                     
                 </form>
@@ -113,13 +113,18 @@ export default {
                 
             },
             edit(question, quiz, index){
-                 this.quesToEdit = question.Id;
+                 this.quesToEdit = question.id;
                  this.quizToEdit = quiz.id
                  this.tempQuestion = question;
                  this.selectedQuiz =  (index == this.selectedQuiz)? -1: index;
                 console.log(question, quiz);
                 
             },
+            change(index){
+                this.tempOption = this.tempQuestion.choices[index]
+                this.tempQuestion.choices.splice(index,1);
+            },
+
             addOptionToTemp(){
                 if(this.tempOption.length != 0){
                     if( !this.tempQuestion.choices)this.tempQuestion.choices = []
