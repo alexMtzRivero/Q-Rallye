@@ -8,10 +8,15 @@
      <div id="mapid" class="mapid"> </div>
     <div v-for="(team,indexT) in teams" v-bind:key="team.name">
       <div>
-           <h1 @click="changeDisplay(indexT)">{{team.name}}  {{team.timeText}}</h1>
+           <h1 @click="changeDisplay(indexT)">{{team.name}}  {{team.timeText}} </h1>
       </div>
      
       <div v-if="team.displayed"  style="display: grid;">
+          <h2> BadAnswers: {{team.stats.badAnswers}} </h2>
+          <h2> QuizTime: {{team.stats.quizTime}} seg</h2>
+          <h2> RalleyTime: {{team.stats.ralleyTime}} seg</h2>
+          <h2> Not Answered: {{team.stats.nonAnswered}} </h2>
+          <h2> Finished: {{team.stats.finished}} </h2>
         <div v-for="(answer,index) in team.answers" v-bind:key="team.name+index" class="horizontal">
            <h2 class = "listSection">{{answer.id}}</h2>
            <h2 class = "listSection">{{(answer.endQuiz && answer.startQuiz)?(answer.endQuiz.seconds-answer.startQuiz.seconds):0}} seg</h2>
@@ -53,7 +58,7 @@ export default {
  timeOfTeam: function (team) {
       var date = new Date(null);
         
-      date.setSeconds(team.points); 
+      date.setSeconds(team.stats.points); 
 var result = date.toISOString().substr(11, 8);
       return  result
     },
@@ -66,22 +71,30 @@ var result = date.toISOString().substr(11, 8);
       this.updatePaths();
       this.$forceUpdate();
     },
+    
     updatePoints: function(){
       for (let i = 0; i < this.teams.length; i++) {
-        this.teams[i].points = this.getPointsOf(this.teams[i]);
+        this.teams[i].stats = this.getStatsOf(this.teams[i]);
         this.teams[i].timeText = this.timeOfTeam(this.teams[i])
       }
-      this.teams.sort((a,b)=>{return a.points-b.points});
+      this.teams.sort((a,b)=>{return a.stats.points-b.stats.points});
        
        //console.log(this.teams);
        
     },
-    getPointsOf:function(team){
-      var points = 0;
-      
+    getStatsOf:function(team){
+      var totQuiz = Object.keys(this.quizzes).length
+      var stats = {};
+      stats.points = 0;
+       stats.badAnswers = 0;
+       stats.quizTime = 0;
+      stats.ralleyTime = 0;
+      stats.nonAnswered = 0;
+      stats.finished = true;
       
       if( team.answers!= null){
         // for all the quizz
+        stats.nonAnswered = totQuiz - team.answers.length;
         for (let i = 0; i < team.answers.length; i++) {
           const quiz = team.answers[i];
           // we check the bad choices
@@ -89,22 +102,29 @@ var result = date.toISOString().substr(11, 8);
             for (let i = 0; i < quiz.choices.length; i++) {
               // if its bad answer we add to the counter
               if(this.quizzes[quiz.id].questions[i] && quiz.choices[i]!= this.quizzes[quiz.id].questions[i].goodAnswer)
-                  points+= this.penaltyForBad;
+                  stats.badAnswers += 1;
              // console.log(quiz.choices[i],this.quizzes[quiz.id].questions[i].goodAnswer,quiz.choices[i]!= this.quizzes[quiz.id].questions[i].goodAnswer);
                   
             }
           }
             // we add the time they took to complet the quiz
           if(quiz.endQuiz!=null && quiz.startQuiz!=null){
-              points += quiz.endQuiz.seconds - quiz.startQuiz.seconds;
+              stats.quizTime += quiz.endQuiz.seconds - quiz.startQuiz.seconds;
           }
             
         }
       }
        if(team.endRallye && team.startRallye)
-        points += team.endRallye.seconds - team.startRallye.seconds;
+         stats.ralleyTime += team.endRallye.seconds - team.startRallye.seconds;
+       else 
+         stats.finished = false;
 
-      return points;
+      stats.points = 
+       (stats.badAnswers * this.penaltyForBad)
+       stats.quizTime +
+      stats.ralleyTime +
+      (stats.nonAnswered * this.penaltyForCheckpoint);
+      return stats;
     },
     updatePaths: function(){
         console.log('entro a la funcion ');
@@ -230,9 +250,8 @@ var result = date.toISOString().substr(11, 8);
           db.collection('Rules').get().then((querySnapshot) => {
               querySnapshot.docs.forEach(element => {
                 var malus = element.data().malusReponse;
+                this.penaltyForCheckpoint = Number(element.data().malusCheckpoint);
                 this.penaltyForBad = Number(malus);
-                console.log(malus);
-                
               });
           });
     // gets the data of the teams
