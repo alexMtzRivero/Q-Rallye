@@ -27,6 +27,8 @@
             <button @click="makeCode(index,quiz.id)"> Voir le QR code</button><br>
             <div v-for="question in quiz.questions" :key ="`${question.question}+${quiz.id}`">
                 <h3 class="questionStyle">{{question.question}}</h3>
+                  <button type="button"  @click="edit(question,quiz,index)">Editer</button>
+
                 <ul  class="listAnswers">
                     <li v-for="(pAnswer,indexA) in question.choices" :key ="`${pAnswer}+${indexA}`">{{pAnswer}} </li>
                 </ul>
@@ -110,6 +112,14 @@ export default {
                 this.selectedQuiz =  (quizzIndex == this.selectedQuiz)? -1: quizzIndex;
                 
             },
+            edit(question, quiz, index){
+                 this.quesToEdit = question.Id;
+                 this.quizToEdit = quiz.id
+                 this.tempQuestion = question;
+                 this.selectedQuiz =  (index == this.selectedQuiz)? -1: index;
+                console.log(question, quiz);
+                
+            },
             addOptionToTemp(){
                 if(this.tempOption.length != 0){
                     if( !this.tempQuestion.choices)this.tempQuestion.choices = []
@@ -191,12 +201,22 @@ export default {
             //good
             pushTempTo(quizzIndex) {
                 if(Object.keys(this.tempQuestion).includes('question') && this.tempQuestion.question.length != 0 && Object.keys(this.tempQuestion).includes('goodAnswer')){
-                    var db = firebase.firestore();        
-                    var ind = (this.quizzes[quizzIndex].questions.length)?  this.quizzes[quizzIndex].questions.length:0;
-                    var id = this.quizzes[quizzIndex].id
-                    db.collection("Quizzes/"+id+"/Questions").doc("question"+ind).set(this.tempQuestion)
+                    var db = firebase.firestore();   
+                    if( this.quesToEdit !=null&& this.quizToEdit !=null){
+                         var ind =this.quesToEdit ;
+                         var id = this.quizToEdit ;
+                         
+                    } 
+                    else{
+                        var ind = "question"+Date.now();
+                        var id = this.quizzes[quizzIndex].id
+                    }    
+                    
+                    db.collection("Quizzes/"+id+"/Questions").doc(ind).set(this.tempQuestion)
                     .then((docRef) => {
                         this.refreshList();
+                        this.quesToEdit = null;
+                        this.quizToEdit = null
                     })
                     .catch(function(error) {
                         console.error("Error adding document: ", error);

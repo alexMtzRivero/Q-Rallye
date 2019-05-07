@@ -86,7 +86,7 @@ export default {
               
                 console.log(this.quizzes.length,this.quizzes);
                 
-                db.collection('Quizzes').doc("Quiz" + (n+1)).set(tempQuiz)
+                db.collection('Quizzes').doc("Quiz" +Date.now()).set(tempQuiz)
                     .then((docRef)=> {
                     console.log("Document written with ID: ", docRef);
                     this.$parent.$refs.questions.refreshList()
