@@ -115,15 +115,11 @@ var result = date.toISOString().substr(11, 8);
         }
       }
        if(team.endRallye && team.startRallye)
-         stats.ralleyTime += team.endRallye.seconds - team.startRallye.seconds;
+         stats.ralleyTime = team.endRallye.seconds - team.startRallye.seconds;
        else 
          stats.finished = false;
 
-      stats.points = 
-       (stats.badAnswers * this.penaltyForBad)
-       stats.quizTime +
-      stats.ralleyTime +
-      (stats.nonAnswered * this.penaltyForCheckpoint);
+      stats.points = (stats.badAnswers * this.penaltyForBad) + stats.quizTime + stats.ralleyTime + (stats.nonAnswered * this.penaltyForCheckpoint);
       return stats;
     },
     updatePaths: function(){
