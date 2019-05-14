@@ -1,25 +1,25 @@
 <template>
   <div class="form-style-6">
     <img class="logo" src="../assets/logo_appli.png" />
-    <button class="refresh_button" @click="logPlayers()"> Refresh</button>
+    <button class="refresh_button" @click="logPlayers()"> Rafraîchir</button>
     <br>
     <br>
     <br>
      <div id="mapid" class="mapid"> </div>
     <div v-for="(team,indexT) in teams" v-bind:key="team.name">
       <div>
-           <h1 @click="changeDisplay(indexT)">{{team.name}}  {{team.timeText}} </h1>
+           <h1 @click="changeDisplay(indexT)">{{team.name}}  {{team.timeText}}      status : {{team.stats.status}}</h1>
       </div>
      
       <div v-if="team.displayed"  style="display: grid;">
-          <h2> BadAnswers: {{team.stats.badAnswers}} </h2>
-          <h2> QuizTime: {{team.stats.quizTime}} seg</h2>
-          <h2> RalleyTime: {{team.stats.ralleyTime}} seg</h2>
-          <h2> Not Answered: {{team.stats.nonAnswered}} </h2>
-          <h2> Finished: {{team.stats.finished}} </h2>
+          <h2> Mauvaises réponses: {{team.stats.badAnswers}} </h2>
+          <h2> Temps des Quiz: {{team.stats.quizTime}} sec</h2>
+          <h2> Temps global: {{team.stats.ralleyTime}} sec</h2>
+          <h2> Lieu non visité: {{team.stats.nonAnswered}} </h2>
+          <h2> Rallye terminé: {{team.stats.finished ? "oui" : "non"}}</h2>
         <div v-for="(answer,index) in team.answers" v-bind:key="team.name+index" class="horizontal">
            <h2 class = "listSection">{{answer.id}}</h2>
-           <h2 class = "listSection">{{(answer.endQuiz && answer.startQuiz)?(answer.endQuiz.seconds-answer.startQuiz.seconds):0}} seg</h2>
+           <h2 class = "listSection">{{(answer.endQuiz && answer.startQuiz)?(answer.endQuiz.seconds-answer.startQuiz.seconds):0}} sec</h2>
            <table>
              <tr>
                 <th v-for="(n,index) in answer.choices" :key="team.name+'in1'+index">{{index}} </th>
@@ -56,11 +56,12 @@ export default {
   },
   methods: {
  timeOfTeam: function (team) {
-      var date = new Date(null);
-        
-      date.setSeconds(team.stats.points); 
-var result = date.toISOString().substr(11, 8);
-      return  result
+   var duration = team.stats.points*1000;
+      var minutes = Math.floor((duration / (1000 * 60)) % 60);
+      var hours = Math.floor((duration / (1000 * 60 * 60)));
+  
+      var result = hours+":"+minutes;
+      return result
     },
     changeDisplay:function (index) {
       this.zoomInTeam(this.teams[index].path);
@@ -86,11 +87,12 @@ var result = date.toISOString().substr(11, 8);
       var totQuiz = Object.keys(this.quizzes).length
       var stats = {};
       stats.points = 0;
-       stats.badAnswers = 0;
-       stats.quizTime = 0;
+      stats.badAnswers = 0;
+      stats.quizTime = 0;
       stats.ralleyTime = 0;
       stats.nonAnswered = 0;
       stats.finished = true;
+      stats.status = "pas commencé";
       
       if( team.answers!= null){
         // for all the quizz
@@ -101,6 +103,7 @@ var result = date.toISOString().substr(11, 8);
           if( quiz.choices != null){
             for (let i = 0; i < quiz.choices.length; i++) {
               // if its bad answer we add to the counter
+              if(this.quizzes[quiz.id] != null)
               if(this.quizzes[quiz.id].questions[i] && quiz.choices[i]!= this.quizzes[quiz.id].questions[i].goodAnswer)
                   stats.badAnswers += 1;
              // console.log(quiz.choices[i],this.quizzes[quiz.id].questions[i].goodAnswer,quiz.choices[i]!= this.quizzes[quiz.id].questions[i].goodAnswer);
@@ -114,12 +117,19 @@ var result = date.toISOString().substr(11, 8);
             
         }
       }
-       if(team.endRallye && team.startRallye)
-         stats.ralleyTime = team.endRallye.seconds - team.startRallye.seconds;
-       else 
-         stats.finished = false;
-
-      stats.points = (stats.badAnswers * this.penaltyForBad) + stats.quizTime + stats.ralleyTime + (stats.nonAnswered * this.penaltyForCheckpoint);
+      if(team.endRallye && team.startRallye){
+        stats.ralleyTime = team.endRallye.seconds - team.startRallye.seconds;
+        stats.status = "terminé";
+      }else if(team.startRallye != null && team.endRallye == null){
+        stats.ralleyTime = Math.round(Date.now()/1000 - team.startRallye.seconds);
+        stats.status = "en cours";
+        stats.finished = false;
+      }else{
+        stats.status = "pas commencé";
+        stats.finished = false;
+      }
+      console.log("mauvaises réponses " + stats.badAnswers + " " + this.penaltyForBad + "non répondues : " + stats.nonAnswered);
+      stats.points = (stats.badAnswers * this.penaltyForBad) + stats.quizTime + stats.ralleyTime + (stats.quizTime != 0 ? stats.nonAnswered * this.penaltyForCheckpoint : 0);
       return stats;
     },
     updatePaths: function(){
