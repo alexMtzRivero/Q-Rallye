@@ -12,20 +12,24 @@
       </div>
      
       <div v-if="team.displayed"  style="display: grid;">
-          <h2> Mauvaises réponses: {{team.stats.badAnswers}} </h2>
+          <h2> Mauvaises réponses: {{team.stats.badAnswers}} , pénalité : {{team.stats.badAnswers}}x{{penaltyForBad}} = {{team.stats.badAnswers*penaltyForBad}} sec</h2>
           <h2> Temps des Quiz: {{team.stats.quizTime}} sec</h2>
           <h2> Temps global: {{team.stats.ralleyTime}} sec</h2>
-          <h2> Lieu non visité: {{team.stats.nonAnswered}} </h2>
+          <h2> Lieu non visité: {{team.stats.nonAnswered}} , pénalité : {{team.stats.nonAnswered}}x{{penaltyForCheckpoint}} = {{team.stats.nonAnswered*penaltyForCheckpoint}} sec</h2>
           <h2> Rallye terminé: {{team.stats.finished ? "oui" : "non"}}</h2>
         <div v-for="(answer,index) in team.answers" v-bind:key="team.name+index" class="horizontal">
-           <h2 class = "listSection">{{answer.id}}</h2>
+           <h2 class = "listSection">{{getAnsweredQuizName(answer.id)}}</h2>
            <h2 class = "listSection">{{(answer.endQuiz && answer.startQuiz)?(answer.endQuiz.seconds-answer.startQuiz.seconds):0}} sec</h2>
            <table>
              <tr>
                 <th v-for="(n,index) in answer.choices" :key="team.name+'in1'+index">{{index}} </th>
              </tr>
              <tr>
-                <td v-for="(n,index) in answer.choices" :key="team.name+'in2'+index">{{n}} </td>
+                <td v-for="(n,index) in answer.choices" :key="team.name+'in2'+index">
+                  {{n}}
+                  <img src="../assets/correct.png" class="answerStateImg" v-if="isAnswerCorrect(n, answer.id, index)"/>
+                  <img src="../assets/false.png" class="answerStateImg" v-if="!isAnswerCorrect(n, answer.id, index)"/>
+                </td>
              </tr>
            </table>
         </div>
@@ -57,11 +61,11 @@ export default {
   methods: {
  timeOfTeam: function (team) {
    var duration = team.stats.points*1000;
-      var minutes = Math.floor((duration / (1000 * 60)) % 60);
-      var hours = Math.floor((duration / (1000 * 60 * 60)));
-  
-      var result = hours+":"+minutes;
-      return result
+    var minutes = Math.floor((duration / (1000 * 60)) % 60);
+    var hours = Math.floor((duration / (1000 * 60 * 60)));
+    var seconds = Math.floor((duration / 1000) % 60);
+    var result = hours+"H "+minutes+"m "+seconds+"s";
+    return result
     },
     changeDisplay:function (index) {
       this.zoomInTeam(this.teams[index].path);
@@ -79,8 +83,6 @@ export default {
         this.teams[i].timeText = this.timeOfTeam(this.teams[i])
       }
       this.teams.sort((a,b)=>{return a.stats.points-b.stats.points});
-       
-       //console.log(this.teams);
        
     },
     getStatsOf:function(team){
@@ -128,12 +130,10 @@ export default {
         stats.status = "pas commencé";
         stats.finished = false;
       }
-      console.log("mauvaises réponses " + stats.badAnswers + " " + this.penaltyForBad + "non répondues : " + stats.nonAnswered);
       stats.points = (stats.badAnswers * this.penaltyForBad) + stats.quizTime + stats.ralleyTime + (stats.quizTime != 0 ? stats.nonAnswered * this.penaltyForCheckpoint : 0);
       return stats;
     },
     updatePaths: function(){
-        console.log('entro a la funcion ');
         
         for (let i = 0; i < this.teams.length; i++) {
           const team = this.teams[i];
@@ -145,7 +145,6 @@ export default {
 
 
           }
-          console.log(path,'poly line addes');
         var polyline = L.polyline(path, {color: `${team.color}`}).addTo(this.mymap);
            team.path = path;   
                   
@@ -167,7 +166,6 @@ export default {
             toPush.id = element.id;
             team.answers.push(toPush)
           });
-          //console.log("answers of: "+team.name,team,querySnapshot.docs);
           
         })
       }
@@ -244,6 +242,16 @@ export default {
       this.tileLayer.addTo(this.mymap);
 
       
+    },
+    getAnsweredQuizName: function(answerId){
+      var res = this.quizzes[answerId];
+      if(res != null){
+        return res.nomQuiz;
+      }else
+        return answerId;
+    },
+    isAnswerCorrect: function(answer, id, index){
+      return (this.quizzes[id].questions[index].goodAnswer == answer);
     }
 
 
@@ -302,6 +310,13 @@ td{
   border: solid 1px;
   background: #f2f2f2;
 
+}
+
+.answerStateImg{
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+  margin: auto;
 }
 
 

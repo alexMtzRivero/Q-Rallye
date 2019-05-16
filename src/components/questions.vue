@@ -17,7 +17,7 @@
             <br>
         </div> 
         <div class="form-style-6" v-for="(quiz,index) in quizzes"  v-bind:key="`${quiz.id}+${index}`">
-            <h1>{{quiz.id}}</h1>
+            <h1>{{quiz.nomQuiz}}</h1>
             <img class="bin" src="../assets/bin.png" @click="deleteQuiz(index, quiz.id)"/>
             <div :class="`${(showedQR == index)?'shown':'hidden'} canvas` ">
                 <div  id="qrholder" ref ="quizhoder"></div><br>
