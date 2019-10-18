@@ -1,17 +1,21 @@
 <template>
   <div class="">
-      <h1>test</h1>
+    <quizzes></quizzes>
+    <questions ref ="questions"></questions>
   </div>
 </template>
 
 <script>
+import Quizzes from './quizzes.vue'
+import Questions from './questions.vue'
+
 export default {
   name: 'name',
   components:{
-
+    Quizzes,
+    Questions
   },
   props: {
-
 
   },
   data(){
@@ -24,7 +28,7 @@ export default {
   },
   // on create
   mounted(){
-
+    this.$parent.testLogin();
   }
 }
 </script>

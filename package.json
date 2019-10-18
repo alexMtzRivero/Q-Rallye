@@ -7,12 +7,17 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "esri-leaflet": "^2.2.4",
     "firebase": "^5.8.2",
+    "firebase-tools": "^6.8.0",
+    "geopoint": "^1.0.1",
+    "v-color": "^1.1.2",
     "vue": "^2.5.22",
+    "vue-color-picker-wheel": "^0.4.3",
     "vue-router": "^3.0.2"
   },
   "devDependencies": {
-    "@vue/cli-service": "^3.4.0",
+    "@vue/cli-service": "^3.7.0",
     "vue-template-compiler": "^2.5.21"
   },
   "postcss": {
