@@ -3,9 +3,13 @@
   <div class="form-style-6">
     <h1>Ajouter une équipe :</h1>
     <label for="teamName">Nom d'équipe :</label><br>
-    <input id="teamName" :maxlength="30" @keydown.space.prevent type="text" v-model="tempName" /><br>
+    <p id="teamInputRules">Caractères interdits : accents, caractères spéciaux</p>
+    <input id="teamName" :maxlength="30" @keydown.space.prevent type="text" v-model="tempName" />
+    
+    <br>
     <label class="erreur" v-if="error">Champ équipe incorrect</label>
     <br>
+    
     
   </div>
   <div class="background-colorPicker" >
@@ -47,6 +51,7 @@ export default {
         tempColor:"#ff0000",
         show:false,
         error:false,
+        regEx: /^[A-Za-z0-9]+$/
     }
   },
   methods:{
@@ -59,8 +64,14 @@ export default {
                 return false;
             }
             else{
-                this.error=false;
-                return true;
+                if(!this.tempName.match(this.regEx)){
+                    this.error=true;
+                    return false;
+                }else{
+                    this.error=false;
+                    return true;
+                }
+                
             }
         },
         addTeam: function() {
@@ -247,6 +258,10 @@ export default {
 .erreur{
   color:red;
 }
+
+#teamInputRules{
+      color: #999;
+  }
 
 @media screen and (min-width: 200px) and (max-width: 640px) {
   h1{

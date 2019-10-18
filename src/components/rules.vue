@@ -3,10 +3,10 @@
 
     <h1>Ajout de règles</h1>
     <h3>Malus :</h3>
-    <label>Malus pour une mauvaise réponse :</label><br>
+    <label>Malus pour une mauvaise réponse en secondes:</label><br>
     <input v-model="malusReponse" type="text" id="malusReponse"/><br>
     <button @click="addMalusReponse(malusReponse)">Ajouter le malus</button><br><br>
-    <label>Malus pour checkpoint manqué :</label><br>
+    <label>Malus pour un lieu manqué en secondes:</label><br>
     <input v-model="malusCheckpoint" type="text" id="malusCheckpoint"/><br>
     <button @click="addMalusCheckpoint(malusCheckpoint)">Ajouter le malus</button><br><br>
 
